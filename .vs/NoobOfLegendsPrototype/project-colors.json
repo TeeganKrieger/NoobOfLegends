@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "f41b380c-9acd-434f-9395-5a8e6d5cef6f": {
+      "ProjectGuid": "f41b380c-9acd-434f-9395-5a8e6d5cef6f",
+      "DisplayName": "NoobOfLegends-BackEnd",
+      "ColorIndex": 0
+    },
+    "98316fd4-1da8-4fb6-a6a6-ff69287903e6": {
+      "ProjectGuid": "98316fd4-1da8-4fb6-a6a6-ff69287903e6",
+      "DisplayName": "NoobOfLegends-FrontEnd",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
