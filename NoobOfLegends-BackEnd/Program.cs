@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen(options =>
 
 //Add Additional Services
 builder.Services.AddDbContext<AppDbContext>(
-                options => options.UseSqlServer(config.GetConnectionString("DbConnectionString")));
+                options => options.UseLazyLoadingProxies().UseSqlServer(config.GetConnectionString("DbConnectionString")));
 
 var app = builder.Build();
 
