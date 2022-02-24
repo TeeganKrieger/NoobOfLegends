@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using NoobOfLegends.APIs.RiotApi;
 using NoobOfLegends.Models.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,8 @@ builder.Services.AddSwaggerGen(options =>
 //Add Additional Services
 builder.Services.AddDbContext<AppDbContext>(
                 options => options.UseLazyLoadingProxies().UseSqlServer(config.GetConnectionString("DbConnectionString")));
+
+builder.Services.AddScoped<RiotGamesApiTranslator>();
 
 var app = builder.Build();
 
