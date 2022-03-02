@@ -14,18 +14,17 @@ export default class MatchListing extends Component {
     render() {
         let match = this.state.match;
         return (
-            <div className='row'>
-                <div className='col-5'>
-                    <img className='rank-icon' src={GetRankedIcon(match.averageRank)} />
+            <div className={"listing-box row " + (match.won ? "victory" : "defeat")}>
+                <div className='col-3 my-auto'>
                     <img className='champion-icon' src={GetChampionIcon(match.champion)} />
-                    <img className='position-icon' src='' />
-                </div>
-                <div className='col-3'>
-                    <span className='won-span'>{match.won ? "Won" : "Lost"}</span>
-                    <span className='played-on-span'>{match.playedOn}</span>
                 </div>
                 <div className='col-4'>
-                    <span className='kda-span'>{match.kills}/{match.deaths}/{match.assists}</span>
+                    <div className='won-span'>{match.won ? "Victory" : "Defeat"}</div>
+                    <div className='played-on-span'>Played on: {match.playedOn}</div>
+                </div>
+                <div className='col-5'>
+                    <div className='kda-title-span'>K/D/A</div>
+                    <div className='kda-span'>{match.kills}/{match.deaths}/{match.assists}</div>
                 </div>
             </div>
             );

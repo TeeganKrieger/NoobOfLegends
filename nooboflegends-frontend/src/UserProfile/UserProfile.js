@@ -14,9 +14,9 @@ export default class UserProfile extends Component {
 
         return (
             <div className='row'>
-                <div className='col-12 col-md-6'>
-                    
-                    <MatchList matches={this.GetFakeMatches().matches} />
+                <div className='col-12 col-md-4'>
+                    <UserInfo user={this.GetFakeUserInfo()} />
+                    <MatchList matches={this.GetFakeMatches()} />
                 </div>
             </div>
             );
@@ -33,8 +33,7 @@ export default class UserProfile extends Component {
     }
 
     GetFakeMatches() {
-        return {
-            "matches": [
+        return [
                 {
                     "queue": 0,
                     "champion": "Zeri",
@@ -68,8 +67,7 @@ export default class UserProfile extends Component {
                     "deaths": 2,
                     "assists": 4
                 }
-            ]
-        };
+            ];
     }
 
 }

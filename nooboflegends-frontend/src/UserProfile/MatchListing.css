@@ -1,4 +1,24 @@
 
+.listing-box {
+    width: 100%;
+    height: 10%;
+    border: 2px solid black;
+    border-top: none;
+    margin: 0px;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    background-color: #26292e;
+    max-height: 5rem;
+}
+
+.victory {
+    background-color: green;
+}
+
+.defeat {
+    background-color: red;
+}
+
 .rank-icon {
     width: 50%;
 }
@@ -8,5 +28,37 @@
 }
 
 .champion-icon {
-    width: 50%;
+    display: block;
+    margin: auto;
+    width: 100%;
+    max-width: 4rem;
+    margin-top: auto;
+}
+
+.won-span {
+    font-size: 1.5rem;
+    width: fit-content;
+    margin: 0px auto 0px auto;
+}
+
+.played-on-span {
+
+}
+
+.kda-title-span {
+    display: block;
+    font-size: 0.75rem;
+    width: fit-content;
+    margin: 0px auto 0px auto;
+}
+
+.kda-span {
+    display: block;
+    font-size: 2rem;
+    width: fit-content;
+    margin: 0px auto 0px auto;
+}
+
+br {
+    max-height: 0.25rem;
 }
