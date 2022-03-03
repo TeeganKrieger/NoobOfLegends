@@ -1,0 +1,25 @@
+
+.rank-icon {
+    width: 100%;
+}
+
+.rank-title {
+    color: var(--league-white);
+    width: fit-content;
+    margin: auto;
+}
+
+.user-info-row {
+    margin-top: 1rem;
+    margin-left: 2rem;
+}
+
+span.username {
+    color: var(--league-white);
+    font-size: 2rem;
+}
+
+span.tagline {
+    color: var(--league-white);
+    font-size: 0.75rem;
+}
