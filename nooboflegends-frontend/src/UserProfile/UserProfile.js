@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './UserProfile.css';
 import UserInfo from './UserInfo'
 import MatchList from './MatchList'
+import StatSelector from './StatSelector'
+import Comparison from './Comparison'
 
 export default class UserProfile extends Component {
 
@@ -13,16 +15,25 @@ export default class UserProfile extends Component {
     render() {
 
         return (
-            <div className='row'>
-                <div className='col-12 col-md-5'>
-                    <UserInfo user={this.GetFakeUserInfo()} />
-                    <MatchList matches={this.GetFakeMatches()} />
-                </div>
-                <div className='col-md-2'>
-
-                </div>
-                <div className='col-md-5'>
-
+            <div className='container-fluid'>
+                <div className='row'>
+                    <div className='col-12 col-md-5'>
+                        <UserInfo user={this.GetFakeUserInfo()} />
+                        <MatchList matches={this.GetFakeMatches()} />
+                    </div>
+                    <div className='col-md-1'>
+                    </div>
+                    <div className='col-md-2'>
+                        <StatSelector stat="gold" p={(o) => o.gold} />
+                        <StatSelector stat="kills" />
+                        <StatSelector stat="deaths" />
+                        <StatSelector stat="assists" />
+                        <StatSelector stat="vision score" />
+                        <StatSelector stat="damage" />
+                    </div>
+                    <div className='col-md-4'>
+                        <Comparison name='Kills' matches={this.GetFakeMatches()} lambda={(m) => m.kills} />
+                    </div>
                 </div>
             </div>
             );
