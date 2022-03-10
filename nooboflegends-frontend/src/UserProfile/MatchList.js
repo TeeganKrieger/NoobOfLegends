@@ -6,7 +6,7 @@ export default class MatchList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { matches: props.matches };
+        this.state = { matches: props.matches, select: props.select, deselect: props.deselect };
     }
 
     render() {
@@ -14,7 +14,7 @@ export default class MatchList extends Component {
         var rows = [];
 
         for (let i = 0; i < matches.length; i++) {
-            rows.push(<MatchListing key={i} match={this.state.matches[i]} />)
+            rows.push(<MatchListing key={i} match={this.state.matches[i]} select={this.state.select} deselect={this.state.deselect} />)
         }
 
         return (

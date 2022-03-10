@@ -7,15 +7,28 @@ export default class MatchListing extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {match: props.match};
+        this.state = { match: props.match, select: props.select, deselect: props.deselect };
+    }
+
+    toggleSelect() {
+        let match = this.state.match;
+        let select = this.state.select;
+        let deselect = this.state.deselect;
+
+        let b = document.getElementById(match.id).classList.toggle("selected");
+        if (b)
+            select(match);
+        else
+            deselect(match);
     }
 
     render() {
         let match = this.state.match;
+
         return (
-            <button className={"listing-box row selected " + (match.won ? "victory" : "defeat")}>
+            <button id={match.id} className={"listing-box row " + (match.won ? "victory" : "defeat")} onClick={() => this.toggleSelect()}>
                 <div className='col-no-padding col-3 align-items-center justify-content-center'>
-                    <img className='champion-icon' src={GetChampionIcon(match.champion)} />
+                    <img className='champion-icon' src={GetChampionIcon(match.champion)} />s
                 </div>
                 <div className='col-no-padding col-3'>
                     <div className={match.won ? "won-span" : "lost-span"}>{match.won ? "Victory" : "Defeat"}</div>

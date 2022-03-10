@@ -1,4 +1,8 @@
 
+.selected {
+    border-left: 10px solid red;
+}
+
 button.listing-box {
     display: flex;
     width: 100%;
@@ -77,6 +81,3 @@ br {
     padding: 0px;
 }
 
-.selected {
-
-}

@@ -28,7 +28,9 @@ export default class Comparison extends Component {
         );
     }
 
-
+    componentWillReceiveProps(props) {
+        this.state = { name: props.name, matches: props.matches, lambda: props.lambda };
+    }
 
     render() {
         let name = this.state.name;
