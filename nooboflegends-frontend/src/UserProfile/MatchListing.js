@@ -16,10 +16,14 @@ export default class MatchListing extends Component {
         let deselect = this.state.deselect;
 
         let b = document.getElementById(match.id).classList.toggle("selected");
-        if (b)
+        if (b) {
+            document.getElementById(match.id).style.borderLeft = "0.5rem solid " + match.color;
             select(match);
-        else
+        }
+        else {
+            document.getElementById(match.id).style.borderLeft = "";
             deselect(match);
+        }
     }
 
     render() {

@@ -1,7 +1,5 @@
 
-.selected {
-    border-left: 10px solid red;
-}
+
 
 button.listing-box {
     display: flex;
@@ -14,6 +12,10 @@ button.listing-box {
     color: ghostwhite;
     outline: none;
     border: none;
+}
+
+button.selected {
+
 }
 
 .listing-box.victory {

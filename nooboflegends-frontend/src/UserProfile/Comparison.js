@@ -10,7 +10,6 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import GetColorSet from '../Helpers/DistinctColorGenerator'
 
 export default class Comparison extends Component {
 
@@ -39,16 +38,21 @@ export default class Comparison extends Component {
 
         let vals = [];
         let labels = [];
+        let colors = [];
 
         for (let i = 0; i < matches.length; i++) {
             let val = lambda(matches[i]);
             vals.push(val);
             labels.push("Match " + (i + 1));
+            colors.push(matches[i].color);
         }
+
+        let height = Math.max(150, 33.33 * vals.length);
 
         let options = {
             indexAxis: 'y',
             maintainAspectRatio: false,
+            responsive: true,
             elements: {
                 bar: {
                     borderWidth: 2,
@@ -67,7 +71,7 @@ export default class Comparison extends Component {
                 yAxes: {
                     display: false,
                 }
-            }
+            },
         };
 
         let data = {
@@ -77,16 +81,17 @@ export default class Comparison extends Component {
                     label: name,
                     data: vals,
                     borderColor: 'rgb(0, 0, 0)',
-                    backgroundColor: GetColorSet(vals.length),
+                    backgroundColor: colors,
                 },
             ],
         };
 
-        let height = Math.max(150, 33.33 * vals.length);
+       
+        console.log("Set height to " + height);
 
         return (
-            <div className='chart-container'>
-                <Bar height={height} options={options} data={data} />
+            <div className='chart-container' style={{ height: height + "px"}}>
+                <Bar options={options} data={data} />
             </div>
         );
     }

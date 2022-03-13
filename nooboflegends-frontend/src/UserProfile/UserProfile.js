@@ -4,12 +4,19 @@ import UserInfo from './UserInfo'
 import MatchList from './MatchList'
 import StatSelector from './StatSelector'
 import Comparison from './Comparison'
+import GetColorSet from '../Helpers/DistinctColorGenerator'
 
 export default class UserProfile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { allMatches: this.GetFakeMatches(), selectedMatches: [], activeStatName: "gold", activeStatLambda: (m) => m.gold, };
+        let matches = this.GetFakeMatches();
+        let colors = GetColorSet(matches.length);
+
+        for (let i = 0; i < matches.length; i++)
+            matches[i].color = colors[i];
+
+        this.state = { allMatches: matches, selectedMatches: [], activeStatName: "gold", activeStatLambda: (m) => m.gold };
     }
 
     selectStatFunc = (name, lambda) => {
@@ -17,12 +24,14 @@ export default class UserProfile extends Component {
     }
 
     selectMatch = (match) => {
-        let newMatches = this.state.selectedMatches.push(match);
-        this.setState({ selectedMatches: newMatches });
+        let selected = this.state.selectedMatches ?? [];
+        this.setState({ selectedMatches: [] }); //Little fix for react error when modifying arrays within state
+        selected.push(match);
+        this.setState({ selectedMatches: selected });
     }
 
     deselectMatch = (match) => {
-        let matches = this.state.selectedMatches;
+        let matches = this.state.selectedMatches ?? [];
         let newMatches = matches.filter((m) => m.id != match.id);
         this.setState({ selectedMatches: newMatches });
     }
@@ -34,7 +43,7 @@ export default class UserProfile extends Component {
                 <div className='row'>
                     <div className='col-12 col-md-5'>
                         <UserInfo user={this.GetFakeUserInfo()} />
-                        <MatchList matches={this.GetFakeMatches()} select={this.selectMatch} deselect={this.deselectMatch} />
+                        <MatchList matches={this.state.allMatches} select={this.selectMatch} deselect={this.deselectMatch} />
                     </div>
                     <div className='col-12 col-md-2'>
                     </div>
@@ -54,7 +63,7 @@ export default class UserProfile extends Component {
                         <StatSelector stat="healing" lambda={(m) => m.healing} selectStat={this.selectStatFunc} />
                     </div>
                     <div className='col-12 col-md-4'>
-                        <Comparison name={this.state.activeStatName} matches={this.GetFakeMatches()} lambda={this.state.activeStatLambda} />
+                        <Comparison name={this.state.activeStatName} matches={this.state.selectedMatches} lambda={this.state.activeStatLambda} />
                     </div>
                 </div>
             </div>
@@ -143,6 +152,78 @@ export default class UserProfile extends Component {
             },
             {
                 "id": "NA_6",
+                "queue": 0,
+                "champion": "MonkeyKing",
+                "position": "BOT",
+                "averageRank": 7,
+                "won": false,
+                "playedOn": 312832111,
+                "kills": 9,
+                "deaths": 2,
+                "assists": 4
+            },
+            {
+                "id": "NA_7",
+                "queue": 0,
+                "champion": "Zeri",
+                "position": "MID",
+                "averageRank": 6,
+                "won": true,
+                "playedOn": 192883851,
+                "kills": 7,
+                "deaths": 12,
+                "assists": 6
+            },
+            {
+                "id": "NA_8",
+                "queue": 1,
+                "champion": "DrMundo",
+                "position": "MID",
+                "averageRank": 0,
+                "won": false,
+                "playedOn": 21847214,
+                "kills": 12,
+                "deaths": 7,
+                "assists": 3
+            },
+            {
+                "id": "NA_9",
+                "queue": 0,
+                "champion": "MonkeyKing",
+                "position": "BOT",
+                "averageRank": 7,
+                "won": false,
+                "playedOn": 312832111,
+                "kills": 9,
+                "deaths": 2,
+                "assists": 4
+            },
+            {
+                "id": "NA_10",
+                "queue": 0,
+                "champion": "Zeri",
+                "position": "MID",
+                "averageRank": 6,
+                "won": true,
+                "playedOn": 192883851,
+                "kills": 7,
+                "deaths": 12,
+                "assists": 6
+            },
+            {
+                "id": "NA_11",
+                "queue": 1,
+                "champion": "DrMundo",
+                "position": "MID",
+                "averageRank": 0,
+                "won": false,
+                "playedOn": 21847214,
+                "kills": 12,
+                "deaths": 7,
+                "assists": 3
+            },
+            {
+                "id": "NA_12",
                 "queue": 0,
                 "champion": "MonkeyKing",
                 "position": "BOT",
