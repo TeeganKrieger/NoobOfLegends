@@ -6,14 +6,14 @@ export default class StatSelector extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { stat: props.stat, lambda: props.lambda, selectStat: props.selectStat };
+        this.state = { stat: props.stat, selectStatFunc: props.selectStatFunc };
     }
 
     render() {
         let stat = this.state.stat;
         return (
-            <button className='stat-selector' onClick={() => this.state.selectStat(this.state.stat, this.state.lambda)}>
-                <img className='stat-icon' src={GetStatIcon(stat)} />
+            <button className='stat-selector' onClick={() => this.state.selectStatFunc(stat)}>
+                <img className='stat-icon' src={GetStatIcon(stat.id)} />
             </button>
         );
     }

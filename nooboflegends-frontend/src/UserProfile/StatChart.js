@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Comparison.css';
+import './StatChart.css';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -11,11 +11,11 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-export default class Comparison extends Component {
+export default class StatChart extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { name: props.name, matches: props.matches, lambda: props.lambda };
+        this.state = { stat: props.stat, matches: props.matches };
 
         ChartJS.register(
             CategoryScale,
@@ -28,26 +28,25 @@ export default class Comparison extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.state = { name: props.name, matches: props.matches, lambda: props.lambda };
+        this.state = { stat: props.stat, matches: props.matches };
     }
 
     render() {
-        let name = this.state.name;
+        let stat = this.state.stat;
         let matches = this.state.matches;
-        let lambda = this.state.lambda;
 
         let vals = [];
         let labels = [];
         let colors = [];
 
         for (let i = 0; i < matches.length; i++) {
-            let val = lambda(matches[i]);
+            let val = stat.lambda(matches[i]);
             vals.push(val);
             labels.push("Match " + (i + 1));
             colors.push(matches[i].color);
         }
 
-        let height = Math.max(150, 33.33 * vals.length);
+        let height = Math.max(450, 50 * vals.length);
 
         let options = {
             indexAxis: 'y',
@@ -61,7 +60,7 @@ export default class Comparison extends Component {
             plugins: {
                 title: {
                     display: true,
-                    text: name
+                    text: stat.name
                 },
                 legend: {
                     display: false,
@@ -78,16 +77,13 @@ export default class Comparison extends Component {
             labels: labels,
             datasets: [
                 {
-                    label: name,
+                    label: stat.name,
                     data: vals,
-                    borderColor: 'rgb(0, 0, 0)',
+                    borderColor: '#00000000',
                     backgroundColor: colors,
                 },
             ],
         };
-
-       
-        console.log("Set height to " + height);
 
         return (
             <div className='chart-container' style={{ height: height + "px"}}>

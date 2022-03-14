@@ -1,0 +1,16 @@
+
+.skill {
+    color: white;
+    border-radius: 0.25rem;
+    text-align: center;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+}
+
+.good {
+    background-color: darkgreen;
+}
+
+.bad {
+    background-color: darkred;
+}
