@@ -7,6 +7,6 @@ button.analyze {
     outline: none;
     margin-top: 1.5rem;
     background: #02305E;
-    border: 4px ridge #9D6F20;
+    border: 4px ridge var(--league-gold);
     color: white;
 }

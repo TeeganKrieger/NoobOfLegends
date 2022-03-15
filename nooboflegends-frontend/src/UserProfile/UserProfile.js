@@ -7,6 +7,7 @@ import StatChart from './StatChart'
 import GetColorSet from '../Helpers/DistinctColorGenerator'
 import SkillDisplay from './SkillDisplay';
 
+/* Component that renders an entire user profile using various sub components */
 export default class UserProfile extends Component {
 
     constructor(props) {
@@ -21,6 +22,7 @@ export default class UserProfile extends Component {
             allMatches: matches, selectedMatches: [], activeStat: {id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [] };
     }
 
+    /* An array containing all tracked stats, their ids, names and lambda expressions */
     allStats = [
         {id: "gold", name: "Gold", lambda: (m) => m.gold },
         {id: "kills", name: "Kills", lambda: (m) => m.kills },
@@ -37,10 +39,12 @@ export default class UserProfile extends Component {
         {id: "healing", name: "Healing", lambda: (m) => m.healing },
     ]
 
+    /* A lambda expression passed to StatSelector components to facilitate changing the selected stat */
     selectStatFunc = (stat) => {
         this.setState({ activeStat: stat });
     }
 
+    /* A lambda expression passed to MatchListing components to facilitate selecting a match */
     selectMatch = (match) => {
         let selected = this.state.selectedMatches ?? [];
         this.setState({ selectedMatches: [] }); //Little fix for react error when modifying arrays within state
@@ -48,12 +52,14 @@ export default class UserProfile extends Component {
         this.setState({ selectedMatches: selected });
     }
 
+    /* A lambda expression passed to MatchListing components to facilitate unselecting a match */
     deselectMatch = (match) => {
         let matches = this.state.selectedMatches ?? [];
         let newMatches = matches.filter((m) => m.id != match.id);
         this.setState({ selectedMatches: newMatches });
     }
 
+    /* A function that populates skills by fetching analysis from the backend */
     populateSkills() {
         console.log("Repopulating Skills");
         this.setState({ skills: this.GetFakeAnalysis() });
@@ -70,11 +76,11 @@ export default class UserProfile extends Component {
         return (
             <div className='container-fluid'>
                 <div className='row'>
-                    <div className='col-12 col-md-5'>
+                    <div className='col-12 col-md-7 col-xl-5'>
                         <UserInfo user={this.GetFakeUserInfo()} />
                         <MatchList matches={this.state.allMatches} select={this.selectMatch} deselect={this.deselectMatch} />
                     </div>
-                    <div className='col-12 col-md-1'>
+                    <div className='d-none d-xl-block col-xl-1'>
                     </div>
                     <div className='col-12 col-md-1'>
                         {statSelectors}

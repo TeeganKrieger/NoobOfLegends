@@ -1,7 +1,7 @@
 
 .chart-container {
     padding: 0.5rem;
-    background: #02305E;
+    background: var(--league-light-blue);
     margin-top: 1rem;
-    border: 4px ridge #9D6F20;
+    border: 4px ridge var(--league-gold);
 }

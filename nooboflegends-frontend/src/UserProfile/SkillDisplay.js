@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './SkillDisplay.css';
 
+/* Component that displays multiple skills */
 export default class SkillDisplay extends Component {
 
     constructor(props) {
@@ -18,29 +19,19 @@ export default class SkillDisplay extends Component {
 
         let skills = this.state.skills;
 
-        let rows = [];
-
-        let curr = [];
+        let skillsArr = [];
 
         for (let i = 0; i < skills.length; i++) {
-            if (i > 0 && i % 4 == 0) {
-                rows.push(<div key={(i / 4) + "_row "} className="row">{curr}</div>);
-                curr = [];
-            }
-
-            curr.push(
-                <div key={i + "_ele"} className="col-3">
-                    <div className={"skill " + (skills[i].good ? "good" : "bad")}>
-                        <span>{skills[i].name}</span>
-                    </div>
+            skillsArr.push(
+                <div key={"skill_" + i} className={"skill " + (skills[i].good ? "good" : "bad")}>
+                    <span>{skills[i].name}</span>
                 </div>
             );
         }
-        rows.push(<div key="last_row" className="row">{curr}</div>);
 
         return (
-            <div>
-                {rows}
+            <div className="row">
+                {skillsArr}
             </div>
         );
     }

@@ -15,7 +15,7 @@ import killParticipationIcon from '../Resources/StatIcons/KillParticipation.png'
 import healingIcon from '../Resources/StatIcons/Healing.png';
 
 
-
+/* Get the icon associated with a specific stat */
 export default function GetStatIcon(stat) {
         switch (stat) {
             case "gold":

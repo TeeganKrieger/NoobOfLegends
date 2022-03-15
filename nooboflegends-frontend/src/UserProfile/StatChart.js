@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
+/* Component that displays a bar chart with data provided by a match list and lambda expression */ 
 export default class StatChart extends Component {
 
     constructor(props) {
@@ -60,7 +61,11 @@ export default class StatChart extends Component {
             plugins: {
                 title: {
                     display: true,
-                    text: stat.name
+                    text: stat.name,
+                    color: "#FFFFFF",
+                    font: {
+                        size: 36
+                    }
                 },
                 legend: {
                     display: false,
@@ -69,6 +74,16 @@ export default class StatChart extends Component {
             scales: {
                 yAxes: {
                     display: false,
+                },
+                xAxes: {
+                    grid: {
+                        color: "#055EB7",
+                        borderColor: "#055EB7",
+                    },
+                    ticks: {
+                        color: "#FFFFFF",
+                        fontSize: 18,
+                    }
                 }
             },
         };

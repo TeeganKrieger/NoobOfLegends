@@ -12,6 +12,7 @@ import challengerIcon from '../Resources/RankedIcons/Emblem_Challenger.png';
 
 export default {
 
+    /* Get the icon associated with a specific rank */
      GetRankedIcon(rank) {
         switch (rank) {
             case 1:
@@ -34,6 +35,7 @@ export default {
                 return challengerIcon;
         }
     },
+    /* Get the full proper name associated with a specific rank */
     GetRankedName(rank) {
         switch (rank) {
             case 1:
@@ -56,6 +58,7 @@ export default {
                 return "Challenger";
         }
     },
+    /* Get the name associated with a specific tier */
     GetRankedTierName(tier) {
         switch (tier) {
             case 0:

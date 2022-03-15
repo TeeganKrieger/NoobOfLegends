@@ -1,7 +1,29 @@
 
+/* Desktop */
+@media only screen and (min-width: 1200px) {
+    .stat-selector {
+        width: 45%;
+        margin: 2.5%;
+    }
+}
+
+/* Small Desktop and below */
+@media only screen and (max-width: 1200px) {
+    .stat-selector {
+        width: 95%;
+        margin: 2.5%;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: 768px) {
+    .stat-selector {
+        width: 14%;
+        margin: 2.5%;
+    }
+}
+
 .stat-selector {
-    width: 45%;
-    margin: 2.5%;
     aspect-ratio: 1 / 1;
     padding: 0px;
     border: none;
