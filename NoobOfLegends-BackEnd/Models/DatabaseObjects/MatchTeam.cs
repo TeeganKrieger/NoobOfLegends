@@ -1,6 +1,9 @@
-namespace NoobOfLegends.Whatever 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace NoobOfLegends.Models.Database
 {
-  public class Match 
+  public class MatchTeam
   {
     [Key]
     [Column(TypeName = "NVARCHAR(64)")]
