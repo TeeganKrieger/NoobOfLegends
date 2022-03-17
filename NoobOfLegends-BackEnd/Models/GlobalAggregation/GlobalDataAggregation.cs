@@ -46,21 +46,26 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                     // Get list of top summoners in a rank/division
                     RiotRankedResult[] rankedResults = await translator.GetListOfSummonersInRank(queue, tier, division);
 
-                    //System.Diagnostics.Debug.Write(tier);
-                    //System.Diagnostics.Debug.WriteLine(division);
+                    System.Diagnostics.Debug.Write(tier);
+                    System.Diagnostics.Debug.WriteLine(division);
 
                     // Verify null/empty results
                     if (rankedResults != null)
                     {
                         if (rankedResults.Length > 0)
                         {
-                            //System.Diagnostics.Debug.WriteLine(rankedResults[0].summonerName);
+                            System.Diagnostics.Debug.WriteLine(rankedResults[0].summonerName);
                             // Get match history of the top players
                             for (int i = 0; i < numTopPlayers; i++)
                             {
                                 // Convert leagueId to PUUID using NA1 for now
+                                //TODO: Swap this api call for the GetPuuidBySummonerName call 
                                 RiotPUUID puuid = await translator.GetPUUID(rankedResults[i].summonerName, "NA1");
-                                //System.Diagnostics.Debug.WriteLine(puuid.ToString());
+
+                                if (puuid.puuid == null)
+                                    continue;
+
+                                System.Diagnostics.Debug.WriteLine(puuid.ToString());
                                 await Task.Delay(200);
                                 
                                 // Call getMatchHistory with id and queue parameters
@@ -71,8 +76,8 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                                 {
                                     if (matches.Length > 0)
                                     {
-                                        //System.Diagnostics.Debug.Write("First Match ID: ");
-                                        //System.Diagnostics.Debug.WriteLine(matches[0]);
+                                        System.Diagnostics.Debug.Write("First Match ID: ");
+                                        System.Diagnostics.Debug.WriteLine(matches[0]);
 
                                         // Get the match data from the list
                                         RiotMatch matchData = await translator.GetMatch(matches[numMatches - 1]);
