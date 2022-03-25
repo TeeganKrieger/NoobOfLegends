@@ -48,24 +48,30 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
 
                     System.Diagnostics.Debug.Write(tier);
                     System.Diagnostics.Debug.WriteLine(division);
-
+                    //System.Diagnostics.Debug.Write(rankedResults[0].leagueId);
                     // Verify null/empty results
                     if (rankedResults != null)
                     {
                         if (rankedResults.Length > 0)
                         {
-                            System.Diagnostics.Debug.WriteLine(rankedResults[0].summonerName);
+                            //System.Diagnostics.Debug.WriteLine(rankedResults[0].summonerName);
                             // Get match history of the top players
                             for (int i = 0; i < numTopPlayers; i++)
                             {
-                                // Convert leagueId to PUUID using NA1 for now
                                 //TODO: Swap this api call for the GetPuuidBySummonerName call 
-                                RiotPUUID puuid = await translator.GetPUUID(rankedResults[i].summonerName, "NA1");
-
-                                if (puuid.puuid == null)
+                                RiotSummoner summoner = await translator.GetSummoner(rankedResults[i].summonerName);
+                                System.Diagnostics.Debug.WriteLine(rankedResults[i].summonerName);
+                                
+                                if (summoner == null)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("Summoner does not exist");
                                     continue;
+                                }
 
-                                System.Diagnostics.Debug.WriteLine(puuid.ToString());
+                                System.Diagnostics.Debug.WriteLine(summoner.puuid);
+                                RiotPUUID puuid = new RiotPUUID(summoner.puuid);
+
+                                //System.Diagnostics.Debug.WriteLine(summoner.puuid.ToString());
                                 await Task.Delay(200);
                                 
                                 // Call getMatchHistory with id and queue parameters
@@ -89,20 +95,22 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                                         string tierString = tier.ToString();
                                         string divisionString = division.ToString();
 
+                                        // TODO: Calculate total kills for team 1 and team 2. Pass these into participant data function for KP
+
                                         // Top Laners
-                                        GatherParticipantData(participants[0], participants[5], "TOP", tierString, divisionString);
+                                        await GatherParticipantData(participants[0], participants[5], "TOP", tierString, divisionString);
 
                                         // Junglers
-                                        GatherParticipantData(participants[1], participants[6], "JUNGLE", tierString, divisionString);
+                                        await GatherParticipantData(participants[1], participants[6], "JUNGLE", tierString, divisionString);
 
                                         // Mid Laners
-                                        GatherParticipantData(participants[2], participants[7], "MIDDLE", tierString, divisionString);
+                                        await GatherParticipantData(participants[2], participants[7], "MIDDLE", tierString, divisionString);
 
                                         // Bottom Laners
-                                        GatherParticipantData(participants[3], participants[8], "BOTTOM", tierString, divisionString);
+                                        await GatherParticipantData(participants[3], participants[8], "BOTTOM", tierString, divisionString);
 
                                         // Support Laners 
-                                        GatherParticipantData(participants[4], participants[9], "SUPPORT", tierString, divisionString);
+                                        await GatherParticipantData(participants[4], participants[9], "SUPPORT", tierString, divisionString);
 
                                         // Add 10 to the number of matches in the database
                                         int totalMatches = 10;
@@ -113,12 +121,15 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                             }
                         }
                     }
+                    System.Diagnostics.Debug.WriteLine("-----------------------------------------");
                     await Task.Delay(500); //Delay 500 ms to avoid rate limits causing a test fail
+                
                 }
             }
         }
 
         // Method to collect and sum data from each role
+        // TODO: Gather Data for Kill Participation. Connect to DB
         public async Task GatherParticipantData(RiotMatch.Participant participant1, RiotMatch.Participant participant2, string role, string tier, string division)
         {
             int gold = participant1.goldEarned + participant2.goldEarned;
@@ -133,8 +144,11 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
             int minionKills = participant1.totalMinionsKilled + participant2.totalMinionsKilled;
             int jungleMinionKills = participant1.neutralMinionsKilled + participant2.neutralMinionsKilled;
             int visionScore = participant1.visionScore + participant2.visionScore;
-            //int killParticipation = participant1. + participant2.;
+            //int killParticipation = ((participant1.kills + participant1.assists)/team1kills) + ((participant2.kills + participant2.assists)/team2kills) 
             int healingToChampions = participant1.totalHealsOnTeammates + participant2.totalHealsOnTeammates;
+
+            System.Diagnostics.Debug.WriteLine(participant1.championName);
+            System.Diagnostics.Debug.WriteLine(participant2.championName);
 
             // Connect to DB here and update rows
         }
