@@ -1,15 +1,20 @@
 ﻿using NoobOfLegends.APIs.RiotApi;
+using NoobOfLegends.Models.Database;
+using NoobOfLegends.Models.Services;
 using System.Threading.Tasks;
 
 namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
 {
     public class GlobalAggregation
     {
+        private readonly AppDbContext _dbContext;
+
+
         #region CONSTRUCTOR
 
-        public GlobalAggregation()
+        public GlobalAggregation(AppDbContext dbContext)
         {
-
+            _dbContext = dbContext;
         }
 
         #endregion
@@ -112,8 +117,10 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                                         // Support Laners 
                                         await GatherParticipantData(participants[4], participants[9], "SUPPORT", tierString, divisionString);
 
-                                        // Add 10 to the number of matches in the database
-                                        int totalMatches = 10;
+                                        //TODO: When merged, we should take advantage of the FromRiotMatch method in the Match Table class to convert
+                                        //This match into a match to store in our database
+
+                                        
 
                                     }
                                 }
@@ -126,6 +133,7 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                 
                 }
             }
+            _dbContext?.SaveChanges();
         }
 
         // Method to collect and sum data from each role
@@ -151,6 +159,20 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
             System.Diagnostics.Debug.WriteLine(participant2.championName);
 
             // Connect to DB here and update rows
+            LolGlobalAverage avg = _dbContext?.LolGlobalAverages.Where(x => x.Role == role && x.Rank == tier && x.Division == division).FirstOrDefault();
+            
+            if (avg == null)
+            {
+                avg = new LolGlobalAverage();
+                avg.RoleAndRankAndDivision = $"{role}#{tier}#{division}";
+                _dbContext?.LolGlobalAverages.Add(avg);
+            }
+
+            avg.Gold += gold;
+            avg.MinionKills += minionKills;
+            //etc...
+
+            avg.NumberOfMatches += 2;
         }
 
     }
