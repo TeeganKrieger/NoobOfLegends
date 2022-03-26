@@ -138,7 +138,7 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
 
         // Method to collect and sum data from each role
         // TODO: Gather Data for Kill Participation. Connect to DB
-        public async Task GatherParticipantData(RiotMatch.Participant participant1, RiotMatch.Participant participant2, string role, string tier, string division)
+        public async Task GatherParticipantData(RiotMatch.Participant participant1, RiotMatch.Participant participant2, string role, string rank, string division)
         {
             int gold = participant1.goldEarned + participant2.goldEarned;
             int xp = participant1.champExperience + participant2.champExperience;
@@ -159,19 +159,30 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
             System.Diagnostics.Debug.WriteLine(participant2.championName);
 
             // Connect to DB here and update rows
-            LolGlobalAverage avg = _dbContext?.LolGlobalAverages.Where(x => x.Role == role && x.Rank == tier && x.Division == division).FirstOrDefault();
+            LolGlobalAverage avg = _dbContext?.LolGlobalAverages.Where(x => x.Role == role && x.Rank == rank && x.Division == division).FirstOrDefault();
             
             if (avg == null)
             {
                 avg = new LolGlobalAverage();
-                avg.RoleAndRankAndDivision = $"{role}#{tier}#{division}";
+                avg.RoleAndRankAndDivision = $"{role}#{rank}#{division}";
                 _dbContext?.LolGlobalAverages.Add(avg);
             }
 
             avg.Gold += gold;
             avg.MinionKills += minionKills;
-            //etc...
-
+            avg.XP += xp;
+            avg.Kills += kills;
+            avg.Deaths += deaths;
+            avg.TimeSpentDead += timeSpentDead;
+            avg.Assists += assists;
+            avg.TotalDamageDealt += totalDamageDealt;
+            avg.BaronKills += baronKills;
+            avg.DragonKills += dragonKills;
+            avg.MinionKills += minionKills;
+            avg.JungleMinionKills += jungleMinionKills;
+            avg.VisionScore += visionScore;
+            avg.HealingToChampions += healingToChampions;
+            //avg.KillParticipation += killParticipation;
             avg.NumberOfMatches += 2;
         }
 
