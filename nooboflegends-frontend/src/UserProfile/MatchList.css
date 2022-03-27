@@ -1,0 +1,28 @@
+
+.match-list {
+    border: 4px ridge var(--league-gold);
+    border-right: none;
+    padding: 0px;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    max-height: 30rem;
+    overflow-y: scroll;
+    overflow-x: clip;
+}
+
+    .match-list::-webkit-scrollbar {
+        background: white;
+        border: none;
+    }
+
+    .match-list::-webkit-scrollbar-track {
+        background-color: var(--league-gold);
+    }
+
+    .match-list::-webkit-scrollbar-thumb {
+        background-color: var(--league-light-blue);
+        border-left: 0.15rem solid transparent;
+        border-right: 0.15rem solid transparent;
+        background-clip: padding-box;
+    }
