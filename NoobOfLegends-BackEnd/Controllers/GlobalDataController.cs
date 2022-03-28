@@ -15,23 +15,19 @@ namespace NoobOfLegends_BackEnd.Controllers
             this._dbContext = dbContext;
         }
 
-        [HttpPost("/api/globaldata/execute")]
-        public async Task<IActionResult> ExecuteAggregation()
+        [HttpPost("/api/globaldata/execute/{numberOfTopPlayers}/{numberOfMatches}")]
+        public async Task<IActionResult> ExecuteAggregation(int numberOfTopPlayers, int numberOfMatches)
         {
             try
             {
                 //Trigger execution of the GlobalDataAggregation System
-                GlobalAggregation aggregator = new GlobalAggregation(null);
-                await aggregator.AggregateGlobalData(RiotRankedQueue.RankedSolo5v5, 1, 1);
+                GlobalAggregation aggregator = new GlobalAggregation(null); //TODO: Once Database Corrections Branch is merged into main, replace null with _dbContext
+                await aggregator.AggregateGlobalData(RiotRankedQueue.RankedSolo5v5, numberOfTopPlayers, numberOfMatches);
                 return Ok(); //If it works
             } catch (Exception ex)
             {
                 return StatusCode(500); //If it fails
             }
-
-
-
-            
         }
 
         [HttpGet("/api/globaldata/get/{role}/{rank}/{division}")]
