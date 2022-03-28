@@ -9,8 +9,8 @@ namespace NoobOfLegends.Models.Database
     [Column(TypeName = "NVARCHAR(64)")]
     public string MatchID { get; set; }
 
-    [Column(TypeName = "NVARCHAR(64)")]
-    public string ParticipantID { get; set; }
+    [Column(TypeName = "Integer")]
+    public int ParticipantID { get; set; }
 
     [Column(TypeName = "Integer")]
     public int TeamID { get; set; }
