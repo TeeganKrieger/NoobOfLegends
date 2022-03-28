@@ -178,7 +178,6 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
             avg.TotalDamageDealt += totalDamageDealt;
             avg.BaronKills += baronKills;
             avg.DragonKills += dragonKills;
-            avg.MinionKills += minionKills;
             avg.JungleMinionKills += jungleMinionKills;
             avg.VisionScore += visionScore;
             avg.HealingToChampions += healingToChampions;
