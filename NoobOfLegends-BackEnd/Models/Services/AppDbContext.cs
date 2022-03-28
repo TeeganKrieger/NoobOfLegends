@@ -9,16 +9,16 @@ namespace NoobOfLegends.Models.Services
         public AppDbContext(DbContextOptions options) : base(options) { }
 
         //DbSets will go here
-        public DbSet<LolUser> LolUsers;
+        public DbSet<LolUser> LolUsers { get; set; }
 
-        public DbSet<LolUserAverage> LolUserAverages;
+        public DbSet<LolUserAverage> LolUserAverages { get; set; }
 
-        public DbSet<Match> Matches;
+        public DbSet<Match> Matches { get; set; }
 
-        public DbSet<MatchTeam> MatchTeams;
+        public DbSet<MatchTeam> MatchTeams { get; set; }
 
-        public DbSet<MatchParticipant> MatchParticipants;
+        public DbSet<MatchParticipant> MatchParticipants { get; set; }
 
-        public DbSet<LolGlobalAverage> LolGlobalAverages;
+        public DbSet<LolGlobalAverage> LolGlobalAverages { get; set; }
     }
 }
