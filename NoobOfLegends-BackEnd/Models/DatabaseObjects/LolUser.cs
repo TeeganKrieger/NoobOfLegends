@@ -13,6 +13,8 @@ namespace NoobOfLegends.Models.Database
 
     public string Tagline => UsernameAndTagline?.Split('#')[1];
 
+    public string SummonerName { get; set; }
+
     public virtual List<Match> Matches { get; set; }
   }
 }

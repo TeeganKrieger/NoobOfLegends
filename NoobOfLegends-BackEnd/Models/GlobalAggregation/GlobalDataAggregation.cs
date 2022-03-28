@@ -77,7 +77,6 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                                 RiotPUUID puuid = new RiotPUUID(summoner.puuid);
 
                                 //System.Diagnostics.Debug.WriteLine(summoner.puuid.ToString());
-                                await Task.Delay(1200);
                                 
                                 // Call getMatchHistory with id and queue parameters
                                 string[] matches = await translator.GetMatchHistory(puuid, -1, -1, matchQueue, RiotGameType.Ranked, 0, numMatches);
@@ -92,7 +91,6 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
 
                                         // Get the match data from the list
                                         RiotMatch matchData = await translator.GetMatch(matches[numMatches - 1]);
-                                        await Task.Delay(1200);
 
                                         // Gather participant objects (Top = 0/5 : Jungle = 1/6 : Middle = 2/7: Bottom = 3/8: Utility = 4/9)
                                         RiotMatch.Participant[] participants = matchData.info.participants;
@@ -124,12 +122,10 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
 
                                     }
                                 }
-                                await Task.Delay(1200);
                             }
                         }
                     }
                     System.Diagnostics.Debug.WriteLine("-----------------------------------------");
-                    await Task.Delay(1200); //Delay 500 ms to avoid rate limits causing a test fail
                 
                 }
             }
