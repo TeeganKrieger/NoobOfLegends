@@ -1,35 +1,44 @@
+using NoobOfLegends.APIs.RiotApi;
+using NoobOfLegends.Models.Services;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NoobOfLegends.Models.Database
 {
-  public class Match 
-  {
-    [Key]
-    [Column(TypeName = "NVARCHAR(64)")]
-    public string MatchID { get; set; }
+    public class Match
+    {
+        [Key]
+        [Column(TypeName = "NVARCHAR(64)")]
+        public string MatchID { get; set; }
 
-    [Column(TypeName = "Integer")]
-    public int GameStartTime { get; set; }
+        [Required]
+        public virtual List<LolUser> Users { get; set; }
 
-    [Column(TypeName = "Integer")]
-    public int GameEndTime { get; set; }
+        [Column(TypeName = "Integer")]
+        public int GameStartTime { get; set; }
 
-    [Column(TypeName = "NVARCHAR(64)")]
-    public string GameMode { get; set; }
+        [Column(TypeName = "Integer")]
+        public int GameEndTime { get; set; }
 
-    [Column(TypeName = "Integer")]
-    public int QueueId { get; set; }
+        [Column(TypeName = "NVARCHAR(64)")]
+        public string GameMode { get; set; }
 
-    [Column(TypeName = "Integer")]
-    public int AverageRank { get; set; }
+        [Column(TypeName = "Integer")]
+        public int QueueId { get; set; }
 
+        [Column(TypeName = "Integer")]
+        public int AverageRank { get; set; }
 
-    public static Match FromRiotMatch(RiotMatch match, out MatchParticipant[] participants)
+        public virtual List<MatchParticipant> Participants { get; set; }
+        public virtual List<MatchTeam> Teams { get; set; }
+
+        public static async Task<MatchAndParticipants> FromRiotMatch(AppDbContext dbContext, RiotMatch match)
         {
+            RiotGamesApiTranslator translator = new RiotGamesApiTranslator();
             Match m = new Match();
 
             m.MatchID = match.metadata.matchId;
+            m.Users = new List<LolUser>();
 
             m.GameStartTime = (int)match.info.gameStartTimestamp;
             m.GameEndTime = (int)match.info.gameEndTimestamp;
@@ -44,12 +53,34 @@ namespace NoobOfLegends.Models.Database
 
             foreach (RiotMatch.Participant p in match.info.participants)
             {
+                LolUser user = dbContext.LolUsers.Where(x => x.SummonerName == p.summonerName).FirstOrDefault();
+
+                if (user == null)
+                {
+                    RiotSummoner summoner = await translator.GetSummoner(p.summonerName);
+                    if (summoner != null)
+                    {
+                        RiotAccount account = await translator.GetAccount(new RiotPUUID(summoner.puuid));
+                        if (account != null)
+                        {
+                            user = new LolUser()
+                            {
+                                UsernameAndTagline = $"{account.gameName}#{account.tagLine}",
+                                SummonerName = p.summonerName,
+                            };
+                            dbContext.LolUsers.Add(user);
+                            dbContext.SaveChanges();
+                        }
+                    }
+                }
+
+                m.Users.Add(user);
                 MatchParticipant part = new MatchParticipant();
-                
-                part.MatchID = match.metadata.matchId;
+
+                part.Match = m;
+                part.PlayerName = user?.UsernameAndTagline;
                 part.SelectedRole = p.role;
                 part.ActualRole = p.teamPosition;
-                part.ParticipantID = p.participantId;
                 part.Kills = p.kills;
                 part.Deaths = p.deaths;
                 part.Assists = p.assists;
@@ -66,17 +97,30 @@ namespace NoobOfLegends.Models.Database
                 part.TimeSpentDead = p.totalTimeSpentDead;
                 part.HealingToChampions = p.totalHealsOnTeammates;
 
-                killsPerTeam[part.TeamID] += part.Kills;
+                killsPerTeam[part.TeamID / 100 - 1] += part.Kills;
+
+                participantList.Add(part);
             }
 
             foreach (MatchParticipant p in participantList)
             {
-                p.KillParticipation = (p.Kills + p.Assists) / killsPerTeam[p.TeamID];
+                p.KillParticipation = (p.Kills + p.Assists) / (float)killsPerTeam[p.TeamID / 100 - 1];
             }
 
-            participants = participantList.ToArray();
-
-            return m;
+            return new MatchAndParticipants(m, participantList.ToArray());
         }
-  }
+
+        public class MatchAndParticipants
+        {
+            public Match Match { get; private set; }
+            public MatchParticipant[] MatchParticipants { get; private set; }
+
+            public MatchAndParticipants(Match match, MatchParticipant[] participants)
+            {
+                Match = match;
+                MatchParticipants = participants;
+            }
+        }
+
+    }
 }

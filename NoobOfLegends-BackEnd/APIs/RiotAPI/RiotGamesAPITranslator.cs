@@ -22,7 +22,7 @@ namespace NoobOfLegends.APIs.RiotApi
         private const string ARG_NULL_EXC_MSG = "The arguement '{0}' cannot be null!";
         private const string ARG_DFT_EXC_MSG = "The arguement '{0}' cannot be the default value!";
 
-        private const string API_KEY = "RGAPI-133db675-abd3-4126-9d27-0f2f59190fcf";
+        private const string API_KEY = "RGAPI-1b31eac0-9df3-4b40-ab24-5ad6a3df90ba";
 
         private const string URL_BASE_AMERICAS = "https://americas.api.riotgames.com/";
         private const string URL_BASE_ASIA = "https://asia.api.riotgames.com/";
@@ -41,8 +41,10 @@ namespace NoobOfLegends.APIs.RiotApi
         private const string URL_BASE_RU = "https://ru.api.riotgames.com/";
 
         private const string URL_ACCOUNT_BY_ID = "/riot/account/v1/accounts/by-riot-id/{0}/{1}";
+        private const string URL_ACCOUNT_BY_PUUID = "/riot/account/v1/accounts/by-puuid/{0}";
 
         private const string URL_SUMMONER_BY_PUUID = "/lol/summoner/v4/summoners/by-puuid/{0}";
+        private const string URL_SUMMONER_BY_NAME = "/lol/summoner/v4/summoners/by-name/{0}";
 
         private const string URL_MATCH_HISTORY = "/lol/match/v5/matches/by-puuid/{0}/ids";
         private const string URL_MATCH = "/lol/match/v5/matches/{0}";
@@ -50,6 +52,8 @@ namespace NoobOfLegends.APIs.RiotApi
 
         private const string URL_RANKED_BY_SUMMONER = "/lol/league/v4/entries/by-summoner/{0}";
         private const string URL_RANKED_LEAGUES = "/lol/league-exp/v4/entries/{0}/{1}/{2}";
+
+        private const int API_DELAY_TIMING = 1200;
 
         private RiotApiPlatform platform;
         private RiotApiRegion region;
@@ -162,6 +166,7 @@ namespace NoobOfLegends.APIs.RiotApi
 
             //Make http request
             HttpResponseMessage response = await client.GetAsync(parameters);
+            await Task.Delay(API_DELAY_TIMING);
 
             if (response.IsSuccessStatusCode)
             {
@@ -176,6 +181,38 @@ namespace NoobOfLegends.APIs.RiotApi
             else
             {
                 return default;
+            }
+        }
+
+        
+        public async Task<RiotAccount> GetAccount(RiotPUUID puuid)
+        {
+            if (puuid.puuid == null)
+                throw new ArgumentNullException(nameof(puuid), string.Format(ARG_DFT_EXC_MSG, nameof(puuid)));
+
+            //Fetch Appropriate HTTP Client
+            HttpClient client = GetRegionClient();
+
+            //Build parameter string
+            string parameters = string.Format(URL_ACCOUNT_BY_PUUID, puuid.puuid);
+
+            //Make http request
+            HttpResponseMessage response = await client.GetAsync(parameters);
+            await Task.Delay(API_DELAY_TIMING);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+
+                //Parse the JSON into the appropriate data object
+                RiotAccount account = JsonConvert.DeserializeObject<RiotAccount>(json);
+
+                //Return the Account from the data object
+                return account;
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -203,6 +240,44 @@ namespace NoobOfLegends.APIs.RiotApi
 
             //Make http request
             HttpResponseMessage response = await client.GetAsync(parameters);
+            await Task.Delay(API_DELAY_TIMING);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+
+                //Parse the JSON into the appropriate data object
+                RiotSummoner summoner = JsonConvert.DeserializeObject<RiotSummoner>(json);
+
+                //Return the PUUID from the data object
+                return summoner;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get the Summoner information for a riot account.
+        /// </summary>
+        /// <param name="name">The name of the summoner to look up.</param>
+        /// <returns>A RiotSummoner object.</returns>
+        /// <exception cref="ArgumentException">Thrown if the provided puuid is default.</exception>
+        public async Task<RiotSummoner> GetSummoner(string name)
+        {
+            if (name == null)
+                throw new ArgumentNullException(nameof(name), string.Format(ARG_NULL_EXC_MSG, nameof(name)));
+
+            //Fetch Appropriate HTTP Client
+            HttpClient client = GetPlatformClient();
+
+            //Build parameter string
+            string parameters = string.Format(URL_SUMMONER_BY_NAME, name);
+
+            //Make http request
+            HttpResponseMessage response = await client.GetAsync(parameters);
+            await Task.Delay(API_DELAY_TIMING);
 
             if (response.IsSuccessStatusCode)
             {
@@ -268,6 +343,7 @@ namespace NoobOfLegends.APIs.RiotApi
             string endpoint = parameters + builder.ToString();
 
             HttpResponseMessage response = await client.GetAsync(endpoint);
+            await Task.Delay(API_DELAY_TIMING);
 
             if (response.IsSuccessStatusCode)
             {
@@ -304,6 +380,7 @@ namespace NoobOfLegends.APIs.RiotApi
 
             //Make http request
             HttpResponseMessage response = await client.GetAsync(parameters);
+            await Task.Delay(API_DELAY_TIMING);
 
             if (response.IsSuccessStatusCode)
             {
@@ -340,6 +417,7 @@ namespace NoobOfLegends.APIs.RiotApi
 
             //Make http request
             HttpResponseMessage response = await client.GetAsync(parameters);
+            await Task.Delay(API_DELAY_TIMING);
 
             if (response.IsSuccessStatusCode)
             {
@@ -381,6 +459,7 @@ namespace NoobOfLegends.APIs.RiotApi
 
             //Make http request
             HttpResponseMessage response = await client.GetAsync(parameters);
+            await Task.Delay(API_DELAY_TIMING);
 
             if (response.IsSuccessStatusCode)
             {
@@ -419,6 +498,7 @@ namespace NoobOfLegends.APIs.RiotApi
 
             //Make http request
             HttpResponseMessage response = await client.GetAsync(parameters);
+            await Task.Delay(API_DELAY_TIMING);
 
             if (response.IsSuccessStatusCode)
             {

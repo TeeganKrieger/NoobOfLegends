@@ -1,0 +1,45 @@
+
+/* Desktop */
+@media only screen and (min-width: 1200px) {
+    .skill {
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        width: 20%;
+    }
+}
+
+/* Small Desktop and below */
+@media only screen and (max-width: 1200px) {
+    .skill {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 40%;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: 768px) {
+    .skill {
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        width: 20%;
+    }
+}
+
+.skill {
+    color: white;
+    border-radius: 0.25rem;
+    text-align: center;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    height: fit-content;
+    padding: 0.25rem;
+}
+
+.good {
+    background-color: darkgreen;
+}
+
+.bad {
+    background-color: darkred;
+}

@@ -1,0 +1,12 @@
+
+button.analyze {
+    display: block;
+    width: 80%;
+    margin: auto;
+    font-size: 2.5rem;
+    outline: none;
+    margin-top: 1.5rem;
+    background: #02305E;
+    border: 4px ridge var(--league-gold);
+    color: white;
+}

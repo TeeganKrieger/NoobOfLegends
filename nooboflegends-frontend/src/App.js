@@ -1,34 +1,38 @@
 import React, { Component } from 'react';
+import NavBar from './HomePage/NavBar';
+import HomePage from './HomePage/HomePage';
+import UserProfile from './UserProfile/UserProfile';
 
 export default class App extends Component {
     static displayName = App.name;
 
     constructor(props) {
         super(props);
-        this.state = { message: "", loading: true };
+        this.state = { page: "Home", props: null };
     }
 
-    componentDidMount() {
-        this.fetchMessage();
+    changePage = (pageId, props) => {
+        this.setState({ page: pageId, props: props });
     }
 
     render() {
-        let contents = this.state.loading
-            ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-            : <h2>{this.state.message}</h2>;
+
+        let page = [];
+
+        switch (this.state.page) {
+            case "Home":
+                page.push(<HomePage key="0" changePageFunc={this.changePage} additionalProps={this.state.props} />);
+                break;
+            case "Profile":
+                page.push(<UserProfile key="1" changePageFunc={this.changePage} additionalProps={this.state.props} />);
+                break;
+        }
 
         return (
             <div>
-                <h1>Message from the server: </h1>
-                {contents}
-                <p>Refresh the page to see different messages</p>
+                <NavBar changePageFunc={this.changePage} />
+                {page}
             </div>
         );
-    }
-
-    async fetchMessage() {
-        const response = await fetch('helloworld');
-        const data = await response.json();
-        this.setState({ message: data.message, loading: false });
     }
 }
