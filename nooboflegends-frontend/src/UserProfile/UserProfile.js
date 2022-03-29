@@ -19,7 +19,9 @@ export default class UserProfile extends Component {
             matches[i].color = colors[i];
 
         this.state = {
-            allMatches: matches, selectedMatches: [], activeStat: {id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [] };
+            allMatches: matches, selectedMatches: [], activeStat: { id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [],
+            changePage: props.changePageFunc
+        };
     }
 
     /* An array containing all tracked stats, their ids, names and lambda expressions */
