@@ -12,14 +12,15 @@ export default class UserProfile extends Component {
 
     constructor(props) {
         super(props);
-        let matches = this.GetFakeMatches();
+        let matches = props.additionalProps.matches;
+        let user = props.additionalProps.info;
         let colors = GetColorSet(matches.length);
 
         for (let i = 0; i < matches.length; i++)
             matches[i].color = colors[i];
 
         this.state = {
-            allMatches: matches, selectedMatches: [], activeStat: { id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [],
+            allMatches: matches, userInfo: user, selectedMatches: [], activeStat: { id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [],
             changePage: props.changePageFunc
         };
     }
@@ -79,7 +80,7 @@ export default class UserProfile extends Component {
             <div className='container-fluid'>
                 <div className='row'>
                     <div className='col-12 col-md-7 col-xl-5'>
-                        <UserInfo user={this.GetFakeUserInfo()} />
+                        <UserInfo user={this.state.userInfo} />
                         <MatchList matches={this.state.allMatches} select={this.selectMatch} deselect={this.deselectMatch} />
                     </div>
                     <div className='d-none d-xl-block col-xl-1'>

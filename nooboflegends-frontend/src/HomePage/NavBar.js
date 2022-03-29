@@ -17,13 +17,19 @@ export default class NavBar extends Component {
 
     handleReturnHome(event) {
         event.preventDefault();
-        this.state.changePage("Home", null);
+        this.state.changePage("Home", {}, "NavBar");
     }
 
-    handleSearchSubmit(event) {
+    async handleSearchSubmit(event) {
         event.preventDefault();
-        //Make Request to backend for user. If User is found, redirect to other page
-        this.state.changePage("Profile", null);
+
+        let usernameAndTagline = document.getElementById("navbar-search").value;
+
+        let search = {
+            "searchFor": usernameAndTagline
+        };
+
+        this.state.changePage("Loading", search, "NavBar");
     }
 
     render() {
@@ -46,7 +52,7 @@ export default class NavBar extends Component {
                     <ul className="navbar-nav" style={{ "list style": "none", "marginLeft": "auto", "marginRight": "1.5rem" }}>
                         <form className="form-inline" onSubmit={this.handleSearchSubmit.bind(this)}>
                             <div className="input-group">
-                                <input className="form-control ml-sm-2" type="search" placeholder="Search for Player" aria-label="Search" />
+                                <input id="navbar-search" className="form-control ml-sm-2" type="search" placeholder="Search for Player (Username#Tagline)" aria-label="Search" />
                                 <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                             </div>
                         </form>

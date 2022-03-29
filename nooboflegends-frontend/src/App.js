@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import NavBar from './HomePage/NavBar';
 import HomePage from './HomePage/HomePage';
 import UserProfile from './UserProfile/UserProfile';
+import LoadingPage from './LoadingPage/LoadingPage';
 
 export default class App extends Component {
     static displayName = App.name;
 
     constructor(props) {
         super(props);
-        this.state = { page: "Home", props: null };
+        this.state = {
+            page: "Home", props: {} };
     }
 
-    changePage = (pageId, props) => {
+    changePage = (pageId, props, caller) => {
+        console.log("Registerd change page event: Changing to: " + pageId + " @ " + Date.now() + " by " + caller);
         this.setState({ page: pageId, props: props });
     }
 
@@ -23,8 +26,11 @@ export default class App extends Component {
             case "Home":
                 page.push(<HomePage key="0" changePageFunc={this.changePage} additionalProps={this.state.props} />);
                 break;
+            case "Loading":
+                page.push(<LoadingPage key="1" changePageFunc={this.changePage} additionalProps={this.state.props} />);
+                break;
             case "Profile":
-                page.push(<UserProfile key="1" changePageFunc={this.changePage} additionalProps={this.state.props} />);
+                page.push(<UserProfile key="2" changePageFunc={this.changePage} additionalProps={this.state.props} />);
                 break;
         }
 
