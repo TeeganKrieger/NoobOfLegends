@@ -32,7 +32,7 @@ export default class MatchListing extends Component {
 
     /* Converts a unix timestap into a date string formatted as M/D/Y H:M */
     unixTimeToDate(timestamp) {
-        let date = new Date(timestamp * 1000);
+        let date = new Date(timestamp);
         let day = date.getDate();
         let month = date.getMonth() + 1;
         let year = date.getFullYear();

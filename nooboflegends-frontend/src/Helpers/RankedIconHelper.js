@@ -1,5 +1,6 @@
 import React from 'react';
 
+import unrankedIcon from '../Resources/RankedIcons/Emblem_Unranked.png';
 import ironIcon from '../Resources/RankedIcons/Emblem_Iron.png';
 import bronzeIcon from '../Resources/RankedIcons/Emblem_Bronze.png';
 import silverIcon from '../Resources/RankedIcons/Emblem_Silver.png';
@@ -15,6 +16,8 @@ export default {
     /* Get the icon associated with a specific rank */
      GetRankedIcon(rank) {
         switch (rank) {
+            case -1:
+                return unrankedIcon;
             case 1:
                 return ironIcon;
             case 2:
@@ -38,6 +41,8 @@ export default {
     /* Get the full proper name associated with a specific rank */
     GetRankedName(rank) {
         switch (rank) {
+            case -1:
+                return "Unranked";
             case 1:
                 return "Iron";
             case 2:
@@ -61,7 +66,7 @@ export default {
     /* Get the name associated with a specific tier */
     GetRankedTierName(tier) {
         switch (tier) {
-            case 0:
+            case -1:
                 return "";
             case 1:
                 return "I";

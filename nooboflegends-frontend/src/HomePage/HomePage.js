@@ -9,27 +9,48 @@ export default class HomePage extends Component {
     constructor(props) {
         super(props);
 
+        let error = props.additionalProps.error;
+        let usernameAndTagline = props.additionalProps.usernameAndTagline;
+
         this.state = {
-            changePage: props.changePageFunc, props: props.additionalProps
+            changePage: props.changePageFunc, error: error, searchVal: usernameAndTagline
         };
     }
 
-    handleSearchSubmit(event) {
+    async handleSearchSubmit(event) {
         event.preventDefault();
-        //Make Request to backend for user. If User is found, redirect to other page
-        this.state.changePage("Profile", null);
+
+        let usernameAndTagline = document.getElementById("home-search").value;
+
+        let search = {
+            "searchFor": usernameAndTagline
+        };
+
+        this.state.changePage("Loading", search, "Home Page");
     }
 
 
     render() {
+
+        let errorMsg = [];
+
+        switch (this.state.error) {
+            case "BadRequest":
+                errorMsg.push(<div className="error-msg">No user with the name {this.state.searchVal} found!</div>);
+                break;
+            case "Server":
+                errorMsg.push(<div className="error-msg">An error occured with the server!</div>);
+                break;
+        }
 
         return (
             <div className="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
                 <div className="col-md-5 p-lg-5 mx-auto my-5">
                     <img src={banner} />
                     <div className="form-outline">
+                        {errorMsg}
                         <form onSubmit={this.handleSearchSubmit.bind(this)}>
-                            <input type="search" id="search" className="form-control" placeholder="Search for Player" aria-label="Search" />
+                            <input type="search" id="home-search" className="form-control" placeholder="Search for Player" aria-label="Search" />
                         </form>
                     </div>
                 </div>

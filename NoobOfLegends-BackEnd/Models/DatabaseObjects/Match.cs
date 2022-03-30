@@ -12,11 +12,11 @@ namespace NoobOfLegends.Models.Database
         [Column(TypeName = "NVARCHAR(64)")]
         public string MatchID { get; set; }
 
-        [Column(TypeName = "Integer")]
-        public int GameStartTime { get; set; }
+        [Column]
+        public long GameStartTime { get; set; }
 
-        [Column(TypeName = "Integer")]
-        public int GameEndTime { get; set; }
+        [Column]
+        public long GameEndTime { get; set; }
 
         [Column(TypeName = "NVARCHAR(64)")]
         public string GameMode { get; set; }
@@ -38,8 +38,8 @@ namespace NoobOfLegends.Models.Database
             Match match = new Match()
             {
                 MatchID = riotMatch.metadata.matchId,
-                GameStartTime = (int)riotMatch.info.gameStartTimestamp,
-                GameEndTime = (int)riotMatch.info.gameEndTimestamp,
+                GameStartTime = riotMatch.info.gameStartTimestamp,
+                GameEndTime = riotMatch.info.gameEndTimestamp,
                 GameMode = riotMatch.info.gameMode,
                 QueueId = riotMatch.info.queueId,
                 Users = new List<LolUser>(),
@@ -81,6 +81,19 @@ namespace NoobOfLegends.Models.Database
             foreach (MatchParticipant p in match.Participants)
             {
                 p.KillParticipation = (p.Kills + p.Assists) / (float)killsPerTeam[p.TeamID / 100 - 1];
+                if (float.IsNaN(p.KillParticipation) || float.IsInfinity(p.KillParticipation))
+                    p.KillParticipation = 0f;
+            }
+
+            foreach (RiotMatch.Team team in riotMatch.info.teams)
+            {
+                MatchTeam t = new MatchTeam();
+
+                t.Match = match;
+                t.Won = team.win;
+                t.TeamID = team.teamId;
+
+                match.Teams.Add(t);
             }
 
             return match;
