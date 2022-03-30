@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-/* Component that displays a bar chart with data provided by a match list and lambda expression */ 
+/* Component that displays a bar chart with data provided by a match list and lambda expression */
 export default class StatChart extends Component {
 
     constructor(props) {
@@ -28,8 +28,14 @@ export default class StatChart extends Component {
         );
     }
 
-    componentWillReceiveProps(props) {
-        this.state = { stat: props.stat, matches: props.matches };
+    componentDidUpdate(prevProps) {
+        if (this.props.stat != prevProps.stat) {
+            this.setState({ stat: this.props.stat })
+        }
+
+        if (this.props.matches != prevProps.matches) {
+            this.setState({ matches: this.props.matches });
+        }
     }
 
     render() {
@@ -101,7 +107,7 @@ export default class StatChart extends Component {
         };
 
         return (
-            <div className='chart-container' style={{ height: height + "px"}}>
+            <div className='chart-container' style={{ height: height + "px" }}>
                 <Bar options={options} data={data} />
             </div>
         );

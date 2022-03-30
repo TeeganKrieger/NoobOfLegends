@@ -58,9 +58,7 @@ namespace NoobOfLegends_BackEnd.Controllers
             foreach (Match match in matches)
                 results.Add(new MatchDataResult(match, summoner));
 
-            results.OrderByDescending(x => x.playedOn);
-
-            return Ok(JsonConvert.SerializeObject(results));
+            return Ok(JsonConvert.SerializeObject(results.OrderByDescending(x => x.playedOn)));
         }
 
         public class MatchDataResult
@@ -88,8 +86,18 @@ namespace NoobOfLegends_BackEnd.Controllers
             {
                 this.id = match.MatchID;
                 this.playedOn = match.GameStartTime;
-                this.won = true; //TODO ! This needs to be fixed.
                 MatchParticipant p = match.Participants.Where(x => x.PlayerName == me.name).FirstOrDefault();
+                MatchTeam team = match.Teams.Where(x => x.TeamID == p.TeamID).FirstOrDefault();
+
+                if (team != null)
+                {
+                    this.won = team.Won;
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+
                 if (p != null)
                 {
                     this.champion = p.Champion;
@@ -159,7 +167,7 @@ namespace NoobOfLegends_BackEnd.Controllers
                     rankSoloDuo = new RankedInfo()
                     {
                         rank = -1,
-                        tier = 1,
+                        tier = -1,
                         lp = 0
                     };
                 }
@@ -178,7 +186,7 @@ namespace NoobOfLegends_BackEnd.Controllers
                     rankFlex = new RankedInfo()
                     {
                         rank = -1,
-                        tier = 1,
+                        tier = -1,
                         lp = 0
                     };
                 }

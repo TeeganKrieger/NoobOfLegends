@@ -85,6 +85,17 @@ namespace NoobOfLegends.Models.Database
                     p.KillParticipation = 0f;
             }
 
+            foreach (RiotMatch.Team team in riotMatch.info.teams)
+            {
+                MatchTeam t = new MatchTeam();
+
+                t.Match = match;
+                t.Won = team.win;
+                t.TeamID = team.teamId;
+
+                match.Teams.Add(t);
+            }
+
             return match;
         }
 

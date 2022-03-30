@@ -14,7 +14,6 @@ export default class App extends Component {
     }
 
     changePage = (pageId, props, caller) => {
-        console.log("Registerd change page event: Changing to: " + pageId + " @ " + Date.now() + " by " + caller);
         this.setState({ page: pageId, props: props });
     }
 
@@ -36,7 +35,7 @@ export default class App extends Component {
 
         return (
             <div>
-                <NavBar changePageFunc={this.changePage} />
+                <NavBar changePageFunc={this.changePage} currentPage={this.state.page} />
                 {page}
             </div>
         );

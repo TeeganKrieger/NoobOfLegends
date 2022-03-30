@@ -13,14 +13,13 @@ export default class LoadingPage extends Component {
             changePage: props.changePageFunc,
             searchFor: this.props.additionalProps.searchFor
         };
+    }
 
-        console.log("About to perform search");
+    componentDidMount() {
         this.performSearch(this.props.additionalProps.searchFor);
-        console.log("Const Complete");
     }
 
     async performSearch(usernameAndTagline) {
-        console.log("Recieved Order to do lookup for " + usernameAndTagline);
         //let usernameAndTagline = document.getElementById("navbar-search").value;
         let split = usernameAndTagline.split("#");
 
@@ -37,14 +36,13 @@ export default class LoadingPage extends Component {
         //Make Request to backend for user. If User is found, redirect to other page
         const infoResponse = await fetch("api/info/" + split[0] + "/" + split[1], {
             method: 'GET',
-            mode: 'cors',
+            mode: 'no-cors',
         });
-        console.log("Fetched Info");
+
         const matchResponse = await fetch("api/matches/" + split[0] + "/" + split[1], {
             method: 'GET',
-            mode: 'cors',
+            mode: 'no-cors',
         });
-        console.log("Fetched Matches");
 
         if (infoResponse.status == 200 && matchResponse.status == 200) {
             const info = await infoResponse.json();
@@ -54,7 +52,6 @@ export default class LoadingPage extends Component {
                 "info": info,
                 "matches": matches
             };
-            console.log("About to do a page change");
             this.state.changePage("Profile", props, "LoadingPage (52)");
         } else if (infoResponse.status == 400 || matchResponse.status == 400) {
 
