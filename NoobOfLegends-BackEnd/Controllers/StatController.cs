@@ -95,7 +95,7 @@ namespace NoobOfLegends_BackEnd.Controllers
                 }
                 else
                 {
-                    throw new InvalidOperationException();
+                    this.won = false;
                 }
 
                 if (p != null)
