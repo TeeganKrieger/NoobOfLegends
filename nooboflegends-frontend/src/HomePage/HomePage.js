@@ -26,7 +26,7 @@ export default class HomePage extends Component {
             "searchFor": usernameAndTagline
         };
 
-        this.state.changePage("Loading", search, "Home Page");
+        this.state.changePage("Profile", search, "Home Page");
     }
 
 
