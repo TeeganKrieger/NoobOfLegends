@@ -40,36 +40,38 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
             }
         }
 
-
-        public async Task AnalyzeSkills(SkillAnalysisInput input)
+        // TODO: Finish skills list, get lolGlobalAverage for role/rank/division
+        public async Task AnalyzeSkills(SkillAnalysisInput input) 
         {
             // Margin of allowed error for skill checking
             // i.e. Good performance is higher than average + 10% and bad performance is lower than average - 10%
-            double moe = 0.10;
+            //double moe = 0.10;
 
             // Create skill list
-            Skill highKillPart = new Skill("High Kill Participation", true, (m, lga) => { return m.KillParticipation < (lga.KillParticipation - (lga.KillParticipation * moe)); });
-            Skill lowKillParticipation = new Skill("Low Kill Particiaption", false, (m, lga) => { return m.KillParticipation >= (lga.KillParticipation + (lga.KillParticipation * moe)); });
-            Skill goodCS = new Skill("Good CS", true, (m, lga) => { return (m.MinionKills + m.JungleMinionKills) < (lga.MinionKills + lga.JungleMinionKills) - ((lga.MinionKills + lga.JungleMinionKills) * moe); });
-            Skill poorCS = new Skill("Poor CS", false, (m, lga) => { return (m.MinionKills + m.JungleMinionKills) >= (lga.MinionKills + lga.JungleMinionKills) + ((lga.MinionKills + lga.JungleMinionKills) * moe); });
-            //Skill diesTooMuch = new Skill("Dying Too Much", false, (m, lga) => { return m < lga; });
-            //Skill killStealer = new Skill("Kill Stealer", false, (m, lga) => { return m < lga; });
-            Skill goodVision = new Skill("Good Vision", true, (m, lga) => { return m.VisionScore < (lga.VisionScore - (lga.VisionScore * moe)); });
-            Skill poorVision = new Skill("Poor Vision", false, (m, lga) => { return m.VisionScore >= (lga.VisionScore + (lga.VisionScore * moe)); });
-            Skill goodXP = new Skill("Good XP", true, (m, lga) => { return m.XP < (lga.XP - (lga.XP * moe)); });
-            Skill poorXP = new Skill("Poor XP", false, (m, lga) => { return m.XP >= (lga.XP + (lga.XP * moe)); });
-            Skill goodGoldIncome= new Skill("Good Gold Income", true, (m, lga) => { return m.Gold < (lga.Gold - (lga.Gold * moe)); });
-            Skill poorGoldIncome = new Skill("Poor Gold Income", false, (m, lga) => { return m.Gold >= (lga.Gold + (lga.Gold * moe)); });
-            Skill getsJGObjective = new Skill("Gets Jungle Objectives", true, (m, lga) => { return (m.DragonKills + m.BaronKills) < (lga.DragonKills + lga.BaronKills) - ((lga.DragonKills + lga.BaronKills) * moe); });
-            Skill forgetsJGObjective = new Skill("Forgets Jungle Objectives", false, (m, lga) => { return (m.DragonKills + m.BaronKills) >= (lga.DragonKills + lga.BaronKills) - ((lga.DragonKills + lga.BaronKills) * moe); });
-            Skill goodHealing = new Skill("Good Healing", true, (m, lga) => { return m.HealingToChampions < (lga.HealingToChampions - (lga.HealingToChampions * moe)); });
-            Skill poorHealing = new Skill("Poor Healing", false, (m, lga) => { return m.HealingToChampions >= (lga.HealingToChampions + (lga.HealingToChampions * moe)); });
+            List<Skill> skillsList = new List<Skill>()
+            {
+                new Skill("High Kill Participation", true, (m, lga) => { return m.KillParticipation < (lga.KillParticipation - (lga.KillParticipation * 0.10)); }),
+                new Skill("Low Kill Particiaption", false, (m, lga) => { return m.KillParticipation >= (lga.KillParticipation + (lga.KillParticipation * 0.10)); }),
+                new Skill("Good CS", true, (m, lga) => { return (m.MinionKills + m.JungleMinionKills) < (lga.MinionKills + lga.JungleMinionKills) - ((lga.MinionKills + lga.JungleMinionKills) * 0.10); }),
+                new Skill("Poor CS", false, (m, lga) => { return (m.MinionKills + m.JungleMinionKills) >= (lga.MinionKills + lga.JungleMinionKills) + ((lga.MinionKills + lga.JungleMinionKills) * 0.10); }),
+                //Skill diesTooMuch = new Skill("Dying Too Much", false, (m, lga) => { return m < lga; });
+                //Skill killStealer = new Skill("Kill Stealer", false, (m, lga) => { return m < lga; });
+                new Skill("Good Vision", true, (m, lga) => { return m.VisionScore < (lga.VisionScore - (lga.VisionScore * 0.10)); }),
+                new Skill("Poor Vision", false, (m, lga) => { return m.VisionScore >= (lga.VisionScore + (lga.VisionScore * 0.10)); }),
+                new Skill("Good XP", true, (m, lga) => { return m.XP < (lga.XP - (lga.XP * 0.10)); }),
+                new Skill("Poor XP", false, (m, lga) => { return m.XP >= (lga.XP + (lga.XP * 0.10)); }),
+                new Skill("Good Gold Income", true, (m, lga) => { return m.Gold < (lga.Gold - (lga.Gold * 0.10)); }),
+                new Skill("Poor Gold Income", false, (m, lga) => { return m.Gold >= (lga.Gold + (lga.Gold * 0.10)); }),
+                new Skill("Gets Jungle Objectives", true, (m, lga) => { return (m.DragonKills + m.BaronKills) < (lga.DragonKills + lga.BaronKills) - ((lga.DragonKills + lga.BaronKills) * 0.10); }),
+                new Skill("Forgets Jungle Objectives", false, (m, lga) => { return (m.DragonKills + m.BaronKills) >= (lga.DragonKills + lga.BaronKills) - ((lga.DragonKills + lga.BaronKills) * 0.10); }),
+                new Skill("Good Healing", true, (m, lga) => { return m.HealingToChampions < (lga.HealingToChampions - (lga.HealingToChampions * 0.10)); }),
+                new Skill("Poor Healing", false, (m, lga) => { return m.HealingToChampions >= (lga.HealingToChampions + (lga.HealingToChampions * 0.10)); }),
+            };
 
             MatchParticipant averageVals = new MatchParticipant();
             
-            // Get global average that matches player's rank
+            // Get global average that matches player's rank/division/role
             LolGlobalAverage globalAverage = new LolGlobalAverage();
-
 
             foreach (string matchId in input.matchIDs)
             {
@@ -95,7 +97,6 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
                         averageVals.HealingToChampions += participant.HealingToChampions;
 
                         // Average Role is determined by most frequent role
-                        // Have separate counters to track this??
                     }
                 }
             }
@@ -113,17 +114,12 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
             averageVals.VisionScore /= input.matchIDs.Length;
             averageVals.HealingToChampions /= input.matchIDs.Length;
 
-
-
-
-            // Generate list of skills to check
-
-            List<string> skillsToReturn = new List<string>()
+            List<string> skillsToReturn = new List<string>();
 
                 // Change to return name of skill and boolean
-            foreach (Skill skill in SkillsList)
+            foreach (Skill skill in skillsList)
             {
-                if (skill.checkExpression(averageVals, globalAverage){
+                if (skill.checkExpression(averageVals, globalAverage)){
                     skillsToReturn.Add(skill.ID);
                 }
             }
