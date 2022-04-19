@@ -2,6 +2,7 @@ using NoobOfLegends.APIs.RiotApi;
 using NoobOfLegends.Models.Database;
 using NoobOfLegends.Models.Services;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace NoobOfLegends_BackEnd.Models.SkillAnalysis 
 {
@@ -20,9 +21,17 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
 
         public class SkillAnalysisInput
         {
+            public SkillAnalysisInput(string username, string rank, string division, string[] matchIDs)
+            {
+                this.username = username;
+                this.rank = rank;
+                this.division = division;
+                this.matchIDs = matchIDs;
+            }
+
+            public string username { get; set; }
             public string rank { get; set; }
             public string division { get; set; }
-            public string username { get; set; }
             public string[] matchIDs { get; set; }
         }
 
@@ -41,11 +50,10 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
         }
 
         // TODO: Finish skills list, get lolGlobalAverage for role/rank/division
-        public async Task AnalyzeSkills(SkillAnalysisInput input) 
+        public async Task<List<Tuple<string, bool>>> AnalyzeSkills(SkillAnalysisInput input) 
         {
             // Margin of allowed error for skill checking
             // i.e. Good performance is higher than average + 10% and bad performance is lower than average - 10%
-            //double moe = 0.10;
 
             // Create skill list
             List<Skill> skillsList = new List<Skill>()
@@ -68,10 +76,18 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
                 new Skill("Poor Healing", false, (m, lga) => { return m.HealingToChampions >= (lga.HealingToChampions + (lga.HealingToChampions * 0.10)); }),
             };
 
+            // Create dictionary to track 'average' role
+            var countRoles = new Dictionary<string, int>()
+            {
+                {"TOP", 0},
+                {"JUNGLE", 0},
+                {"MID", 0},
+                {"BOTTOM", 0},
+                {"SUPPORT", 0}
+            };
+
+            // Create average data from select matches
             MatchParticipant averageVals = new MatchParticipant();
-            
-            // Get global average that matches player's rank/division/role
-            LolGlobalAverage globalAverage = new LolGlobalAverage();
 
             foreach (string matchId in input.matchIDs)
             {
@@ -96,7 +112,8 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
                         averageVals.VisionScore += participant.VisionScore;
                         averageVals.HealingToChampions += participant.HealingToChampions;
 
-                        // Average Role is determined by most frequent role
+                        // Average Role is determined by most frequent role. Increase values in dictionary by 1
+                        countRoles[averageVals.ActualRole] += 1;
                     }
                 }
             }
@@ -114,15 +131,23 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
             averageVals.VisionScore /= input.matchIDs.Length;
             averageVals.HealingToChampions /= input.matchIDs.Length;
 
-            List<string> skillsToReturn = new List<string>();
+            // Get the user's most played role from match selection
+            var averageRole = countRoles.Values.Max();
 
-                // Change to return name of skill and boolean
+            // Get global average that matches player's rank/division/role
+            LolGlobalAverage globalAverage= _dbContext?.LolGlobalAverages.Where(x => x.RoleAndRankAndDivision == $"{averageRole}#{input.rank}#{input.division}").FirstOrDefault();
+
+            List<Tuple<string, bool>> skillsToReturn = new List<Tuple<string, bool>>();
+
+            // Change to return name of skill and boolean
             foreach (Skill skill in skillsList)
             {
                 if (skill.checkExpression(averageVals, globalAverage)){
-                    skillsToReturn.Add(skill.ID);
+                    skillsToReturn.Add(Tuple.Create(skill.ID, skill.PositiveSkill));
                 }
             }
+
+            return skillsToReturn;
         }
     }
 }
