@@ -30,7 +30,7 @@ export default class StatChart extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.stat != prevProps.stat) {
-            this.setState({ stat: this.props.stat })
+            this.setState({ stat: this.props.stat });
         }
 
         if (this.props.matches != prevProps.matches) {

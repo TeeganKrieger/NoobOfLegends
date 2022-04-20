@@ -10,8 +10,18 @@ export default class UserInfo extends Component {
         this.state = {user: props.user};
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.user != prevProps.user) {
+            this.setState({ user: this.props.user });
+        }
+    }
+
     render() {
         let user = this.state.user;
+
+        if (user == null)
+            return (<div></div>);
+
         let soloDuo = user.rankSoloDuo;
         let flex = user.rankFlex;
         return (
