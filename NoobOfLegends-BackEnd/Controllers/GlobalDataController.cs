@@ -21,7 +21,7 @@ namespace NoobOfLegends_BackEnd.Controllers
             try
             {
                 //Trigger execution of the GlobalDataAggregation System
-                GlobalAggregation aggregator = new GlobalAggregation(null); //TODO: Once Database Corrections Branch is merged into main, replace null with _dbContext
+                GlobalAggregation aggregator = new GlobalAggregation(_dbContext); //TODO: Once Database Corrections Branch is merged into main, replace null with _dbContext
                 await aggregator.AggregateGlobalData(RiotRankedQueue.RankedSolo5v5, numberOfTopPlayers, numberOfMatches);
                 return Ok(); //If it works
             } catch (Exception ex)
