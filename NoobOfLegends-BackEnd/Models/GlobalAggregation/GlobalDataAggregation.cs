@@ -86,13 +86,13 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                                 // Verify null/empty results
                                 if (matches != null)
                                 {
-                                    if (matches.Length > 0)
+                                    for (int j = 0; j < matches.Length; j++)
                                     {
                                         System.Diagnostics.Debug.Write("First Match ID: ");
                                         System.Diagnostics.Debug.WriteLine(matches[0]);
 
                                         // Get the match data from the list
-                                        RiotMatch matchData = await translator.GetMatch(matches[numMatches - 1]);
+                                        RiotMatch matchData = await translator.GetMatch(matches[j]);
 
                                         if (matchData == null)
                                             continue;
