@@ -22,12 +22,32 @@ namespace NoobOfLegends_BackEnd.Controllers
             {
                 SkillAnalysis analyzer = new SkillAnalysis(_dbContext);
                 SkillAnalysis.SkillAnalysisInput input = new SkillAnalysis.SkillAnalysisInput(username, rank, division, matchIDs);
-                List<Tuple<string, bool>> skills = await analyzer.AnalyzeSkills(input);
+                List<Tuple<string, bool, string>> skills = await analyzer.AnalyzeSkills(input);
 
-                return Ok(skills); //If it works
+                List<SkillResult> results = new List<SkillResult>();
+
+                foreach (Tuple<string, bool, string> skill in skills)
+                {
+                    results.Add(new SkillResult(skill));
+                }
+                return Ok(results); //If it works
             } catch (Exception ex)
             {
                 return BadRequest(); //If it fails
+            }
+        }
+
+        public class SkillResult
+        {
+            public string SkillName { get; set; }
+            public bool Good { get; set; }
+            public string Url { get; set; }
+
+            public SkillResult(Tuple<string, bool, string> tuple)
+            {
+                SkillName = tuple.Item1;
+                Good = tuple.Item2;
+                Url = tuple.Item3;
             }
         }
     }

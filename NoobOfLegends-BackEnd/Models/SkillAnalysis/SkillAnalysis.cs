@@ -40,17 +40,19 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
             public Func<MatchParticipant, LolGlobalAverage, bool> checkExpression;
             public bool PositiveSkill;
             public string ID;
+            public string url;
 
-            public Skill(string id, bool positiveSkill, Func<MatchParticipant, LolGlobalAverage, bool> checkExpression)
+            public Skill(string id, bool positiveSkill, string url, Func<MatchParticipant, LolGlobalAverage, bool> checkExpression)
             {
                 this.checkExpression = checkExpression;
                 PositiveSkill = positiveSkill;
                 ID = id;
+                this.url = url;
             }
         }
 
         // TODO: Finish skills list, get lolGlobalAverage for role/rank/division
-        public async Task<List<Tuple<string, bool>>> AnalyzeSkills(SkillAnalysisInput input) 
+        public async Task<List<Tuple<string, bool, string>>> AnalyzeSkills(SkillAnalysisInput input) 
         {
             // Margin of allowed error for skill checking
             // i.e. Good performance is higher than average + 10% and bad performance is lower than average - 10%
@@ -58,22 +60,22 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
             // Create skill list
             List<Skill> skillsList = new List<Skill>()
             {
-                new Skill("High Kill Participation", true, (m, lga) => { return m.KillParticipation < (lga.KillParticipation - (lga.KillParticipation * 0.10)); }),
-                new Skill("Low Kill Particiaption", false, (m, lga) => { return m.KillParticipation >= (lga.KillParticipation + (lga.KillParticipation * 0.10)); }),
-                new Skill("Good CS", true, (m, lga) => { return (m.MinionKills + m.JungleMinionKills) < (lga.MinionKills + lga.JungleMinionKills) - ((lga.MinionKills + lga.JungleMinionKills) * 0.10); }),
-                new Skill("Poor CS", false, (m, lga) => { return (m.MinionKills + m.JungleMinionKills) >= (lga.MinionKills + lga.JungleMinionKills) + ((lga.MinionKills + lga.JungleMinionKills) * 0.10); }),
+                new Skill("High Kill Participation", true, "", (m, lga) => { return m.KillParticipation < (lga.KillParticipation - (lga.KillParticipation * 0.10)); }),
+                new Skill("Low Kill Particiaption", false, "https://www.youtube.com/watch?v=YrxoA8eFug4", (m, lga) => { return m.KillParticipation >= (lga.KillParticipation + (lga.KillParticipation * 0.10)); }),
+                new Skill("Good CS", true, "", (m, lga) => { return (m.MinionKills + m.JungleMinionKills) < (lga.MinionKills + lga.JungleMinionKills) - ((lga.MinionKills + lga.JungleMinionKills) * 0.10); }),
+                new Skill("Poor CS", false, "https://www.youtube.com/watch?v=jOSyf1NQspo", (m, lga) => { return (m.MinionKills + m.JungleMinionKills) >= (lga.MinionKills + lga.JungleMinionKills) + ((lga.MinionKills + lga.JungleMinionKills) * 0.10); }),
                 //Skill diesTooMuch = new Skill("Dying Too Much", false, (m, lga) => { return m < lga; });
                 //Skill killStealer = new Skill("Kill Stealer", false, (m, lga) => { return m < lga; });
-                new Skill("Good Vision", true, (m, lga) => { return m.VisionScore < (lga.VisionScore - (lga.VisionScore * 0.10)); }),
-                new Skill("Poor Vision", false, (m, lga) => { return m.VisionScore >= (lga.VisionScore + (lga.VisionScore * 0.10)); }),
-                new Skill("Good XP", true, (m, lga) => { return m.XP < (lga.XP - (lga.XP * 0.10)); }),
-                new Skill("Poor XP", false, (m, lga) => { return m.XP >= (lga.XP + (lga.XP * 0.10)); }),
-                new Skill("Good Gold Income", true, (m, lga) => { return m.Gold < (lga.Gold - (lga.Gold * 0.10)); }),
-                new Skill("Poor Gold Income", false, (m, lga) => { return m.Gold >= (lga.Gold + (lga.Gold * 0.10)); }),
-                new Skill("Gets Jungle Objectives", true, (m, lga) => { return (m.DragonKills + m.BaronKills) < (lga.DragonKills + lga.BaronKills) - ((lga.DragonKills + lga.BaronKills) * 0.10); }),
-                new Skill("Forgets Jungle Objectives", false, (m, lga) => { return (m.DragonKills + m.BaronKills) >= (lga.DragonKills + lga.BaronKills) - ((lga.DragonKills + lga.BaronKills) * 0.10); }),
-                new Skill("Good Healing", true, (m, lga) => { return m.HealingToChampions < (lga.HealingToChampions - (lga.HealingToChampions * 0.10)); }),
-                new Skill("Poor Healing", false, (m, lga) => { return m.HealingToChampions >= (lga.HealingToChampions + (lga.HealingToChampions * 0.10)); }),
+                new Skill("Good Vision", true, "", (m, lga) => { return m.VisionScore < (lga.VisionScore - (lga.VisionScore * 0.10)); }),
+                new Skill("Poor Vision", false, "https://youtu.be/6cXqzH2vMH8", (m, lga) => { return m.VisionScore >= (lga.VisionScore + (lga.VisionScore * 0.10)); }),
+                new Skill("Good XP", true, "", (m, lga) => { return m.XP < (lga.XP - (lga.XP * 0.10)); }),
+                new Skill("Poor XP", false, "https://www.youtube.com/watch?v=cL6cWGQtocw", (m, lga) => { return m.XP >= (lga.XP + (lga.XP * 0.10)); }),
+                new Skill("Good Gold Income", true, "", (m, lga) => { return m.Gold < (lga.Gold - (lga.Gold * 0.10)); }),
+                new Skill("Poor Gold Income", false, "https://www.youtube.com/watch?v=Gd8DirIRazI", (m, lga) => { return m.Gold >= (lga.Gold + (lga.Gold * 0.10)); }),
+                new Skill("Gets Jungle Objectives", true, "", (m, lga) => { return (m.DragonKills + m.BaronKills) < (lga.DragonKills + lga.BaronKills) - ((lga.DragonKills + lga.BaronKills) * 0.10); }),
+                new Skill("Forgets Jungle Objectives", false, "https://boosteria.org/guides/league-legends-objectives-guide", (m, lga) => { return (m.DragonKills + m.BaronKills) >= (lga.DragonKills + lga.BaronKills) - ((lga.DragonKills + lga.BaronKills) * 0.10); }),
+                new Skill("Good Healing", true, "", (m, lga) => { return m.HealingToChampions < (lga.HealingToChampions - (lga.HealingToChampions * 0.10)); }),
+                new Skill("Poor Healing", false, "https://www.metabomb.net/leagueoflegends/gameplay-guides/league-of-legends-support-guide-how-to-play-support", (m, lga) => { return m.HealingToChampions >= (lga.HealingToChampions + (lga.HealingToChampions * 0.10)); }),
             };
 
             // Create dictionary to track 'average' role
@@ -132,18 +134,18 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
             averageVals.HealingToChampions /= input.matchIDs.Length;
 
             // Get the user's most played role from match selection
-            var averageRole = countRoles.Values.Max();
+            var averageRole = countRoles.OrderByDescending(x => x.Value).First();
 
             // Get global average that matches player's rank/division/role
             LolGlobalAverage globalAverage= _dbContext?.LolGlobalAverages.Where(x => x.RoleAndRankAndDivision == $"{averageRole}#{input.rank}#{input.division}").FirstOrDefault();
 
-            List<Tuple<string, bool>> skillsToReturn = new List<Tuple<string, bool>>();
+            List<Tuple<string, bool, string>> skillsToReturn = new List<Tuple<string, bool, string>>();
 
             // Change to return name of skill and boolean
             foreach (Skill skill in skillsList)
             {
                 if (skill.checkExpression(averageVals, globalAverage)){
-                    skillsToReturn.Add(Tuple.Create(skill.ID, skill.PositiveSkill));
+                    skillsToReturn.Add(Tuple.Create(skill.ID, skill.PositiveSkill, skill.url));
                 }
             }
 
