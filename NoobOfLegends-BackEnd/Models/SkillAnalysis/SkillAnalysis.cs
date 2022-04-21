@@ -3,6 +3,7 @@ using NoobOfLegends.Models.Database;
 using NoobOfLegends.Models.Services;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using NoobOfLegends_BackEnd.Controllers;
 
 namespace NoobOfLegends_BackEnd.Models.SkillAnalysis 
 {
@@ -19,21 +20,7 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
 
         #endregion
 
-        public class SkillAnalysisInput
-        {
-            public SkillAnalysisInput(string username, string rank, string division, string[] matchIDs)
-            {
-                this.username = username;
-                this.rank = rank;
-                this.division = division;
-                this.matchIDs = matchIDs;
-            }
-
-            public string username { get; set; }
-            public string rank { get; set; }
-            public string division { get; set; }
-            public string[] matchIDs { get; set; }
-        }
+        
 
         public class Skill
         {
@@ -52,7 +39,7 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
         }
 
         // TODO: Finish skills list, get lolGlobalAverage for role/rank/division
-        public async Task<List<Tuple<string, bool, string>>> AnalyzeSkills(SkillAnalysisInput input) 
+        public async Task<List<Tuple<string, bool, string>>> AnalyzeSkills(SkillAnalysisController.SkillAnalysisInput input) 
         {
             // Margin of allowed error for skill checking
             // i.e. Good performance is higher than average + 10% and bad performance is lower than average - 10%
@@ -135,6 +122,13 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
 
             // Get the user's most played role from match selection
             var averageRole = countRoles.OrderByDescending(x => x.Value).First();
+
+            //Compare unranked players to average ranked players
+            if (input.rank == "")
+            {
+                input.rank = "Gold";
+                input.division = "IV";
+            }
 
             // Get global average that matches player's rank/division/role
             LolGlobalAverage globalAverage= _dbContext?.LolGlobalAverages.Where(x => x.RoleAndRankAndDivision == $"{averageRole}#{input.rank}#{input.division}").FirstOrDefault();
