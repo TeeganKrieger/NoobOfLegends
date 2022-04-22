@@ -9,48 +9,71 @@ export default class NavBar extends Component {
         super(props);
 
         this.state = {
-            changePage: this.props.changePageFunc
+            changePage: this.props.changePageFunc,
+            currentPage: this.props.currentPage
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.currentPage != prevProps.currentPage) {
+            this.setState({ currentPage: this.props.currentPage });
+        }
     }
 
     doNothing() { }
 
     handleReturnHome(event) {
         event.preventDefault();
-        this.state.changePage("Home", null);
+        this.state.changePage("Home", {}, "NavBar");
     }
 
-    handleSearchSubmit(event) {
+    async handleSearchSubmit(event) {
         event.preventDefault();
-        //Make Request to backend for user. If User is found, redirect to other page
-        this.state.changePage("Profile", null);
+
+        let usernameAndTagline = document.getElementById("navbar-search").value;
+
+        let search = {
+            "searchFor": usernameAndTagline
+        };
+
+        this.state.changePage("Loading", search, "NavBar");
     }
 
     render() {
 
+        let searchBar = [];
+
+        if (this.state.currentPage != "Home") {
+            searchBar.push(
+                <ul className="navbar-nav" style={{ "list style": "none", "marginLeft": "auto", "marginRight": "1.5rem" }}>
+                    <form className="form-inline" onSubmit={this.handleSearchSubmit.bind(this)}>
+                        <div className="input-group">
+                            <input id="navbar-search" className="form-control" type="search" placeholder="Search for Player (Username#Tagline)" aria-label="Search" />
+                            <button id="navbar-submit" className="btn" type="submit">Search</button>
+                        </div>
+                    </form>
+                </ul>);
+        }
+
         return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <nav className="navbar navbar-expand-lg">
                 <a className="navbar-brand" onClick={this.handleReturnHome.bind(this)}>
-                    <img src={logo} height="40" alt="" style={{"marginLeft":"1.5rem"}}/>
+                    <img src={logo} height="40" alt="" style={{ "marginLeft": "1.5rem" }} />
                 </a>
 
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <div className="collapse navbar-collapse">
+
                     <ul className="navbar-nav mr-auto">
-                        <li className="nav-item active">
+                        <li className="nav-item">
                             <a className="nav-link" onClick={this.handleReturnHome.bind(this)}>Home</a>
                         </li>
-                        <li className="nav-item px-10">
-                            <a className="nav-link" onClick={ this.doNothing() }>Compare</a>
+                        <li className="nav-item">
+                            <a className="nav-link" onClick={this.doNothing()}>Compare</a>
                         </li>
                     </ul>
-                    <ul className="navbar-nav" style={{ "list style": "none", "marginLeft": "auto", "marginRight": "1.5rem" }}>
-                        <form className="form-inline" onSubmit={this.handleSearchSubmit.bind(this)}>
-                            <div className="input-group">
-                                <input className="form-control ml-sm-2" type="search" placeholder="Search for Player" aria-label="Search" />
-                                <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                            </div>
-                        </form>
-                    </ul>
+
+                    {searchBar}
+
                 </div>
             </nav >
         );

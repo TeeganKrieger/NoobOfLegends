@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,6 +11,7 @@ namespace NoobOfLegends.Models.Database
         public int ID { get; set; }
 
         [Required]
+        [JsonIgnore]
         public virtual Match Match { get; set; }
 
         [Column(TypeName = "NVARCHAR(128)")]

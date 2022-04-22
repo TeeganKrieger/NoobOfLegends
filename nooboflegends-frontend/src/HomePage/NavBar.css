@@ -1,0 +1,23 @@
+.navbar {
+    background-color: var(--league-medium-blue);
+}
+
+#navbar-search {
+    width: 25rem;
+}
+
+button#navbar-submit {
+    color: var(--league-gold);
+    border: 1px solid var(--league-gold);
+    border-radius: 2px;
+    outline: none;
+}
+
+.nav-link {
+    color: var(--league-white);
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    color: var(--league-gold);
+}

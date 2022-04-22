@@ -11,14 +11,14 @@ using NoobOfLegends.Models.Services;
 namespace NoobOfLegends_BackEnd.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220328222901_Migration2")]
-    partial class Migration2
+    [Migration("20220329171943_migration3")]
+    partial class migration3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -164,15 +164,15 @@ namespace NoobOfLegends_BackEnd.Migrations
                     b.Property<int>("AverageRank")
                         .HasColumnType("Integer");
 
-                    b.Property<int>("GameEndTime")
-                        .HasColumnType("Integer");
+                    b.Property<long>("GameEndTime")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("GameMode")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(64)");
 
-                    b.Property<int>("GameStartTime")
-                        .HasColumnType("Integer");
+                    b.Property<long>("GameStartTime")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("QueueId")
                         .HasColumnType("Integer");

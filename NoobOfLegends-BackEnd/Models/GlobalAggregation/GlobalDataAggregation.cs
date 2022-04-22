@@ -14,6 +14,8 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
 
         public GlobalAggregation(AppDbContext dbContext)
         {
+            if (dbContext == null)
+                System.Diagnostics.Debug.WriteLine("WARNING: No DBCONTEXT!");
             _dbContext = dbContext;
         }
 
@@ -84,13 +86,16 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                                 // Verify null/empty results
                                 if (matches != null)
                                 {
-                                    if (matches.Length > 0)
+                                    for (int j = 0; j < matches.Length; j++)
                                     {
                                         System.Diagnostics.Debug.Write("First Match ID: ");
                                         System.Diagnostics.Debug.WriteLine(matches[0]);
 
                                         // Get the match data from the list
-                                        RiotMatch matchData = await translator.GetMatch(matches[numMatches - 1]);
+                                        RiotMatch matchData = await translator.GetMatch(matches[j]);
+
+                                        if (matchData == null)
+                                            continue;
 
                                         // Gather participant objects (Top = 0/5 : Jungle = 1/6 : Middle = 2/7: Bottom = 3/8: Utility = 4/9)
                                         RiotMatch.Participant[] participants = matchData.info.participants;
@@ -122,6 +127,7 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
 
                                     }
                                 }
+                                _dbContext?.SaveChanges();
                             }
                         }
                     }
@@ -130,6 +136,7 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
                 }
             }
             _dbContext?.SaveChanges();
+            System.Diagnostics.Debug.WriteLine("Wrote to DB!");
         }
 
         // Method to collect and sum data from each role
@@ -151,18 +158,21 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
             //int killParticipation = ((participant1.kills + participant1.assists)/team1kills) + ((participant2.kills + participant2.assists)/team2kills) 
             int healingToChampions = participant1.totalHealsOnTeammates + participant2.totalHealsOnTeammates;
 
-            System.Diagnostics.Debug.WriteLine(participant1.championName);
-            System.Diagnostics.Debug.WriteLine(participant2.championName);
+            //System.Diagnostics.Debug.WriteLine(participant1.championName);
+            //System.Diagnostics.Debug.WriteLine(participant2.championName);
 
             // Connect to DB here and update rows
             LolGlobalAverage avg = _dbContext?.LolGlobalAverages.Where(x => x.RoleAndRankAndDivision == $"{role}#{rank}#{division}").FirstOrDefault();
 
             if (avg == null)
             {
+                System.Diagnostics.Debug.WriteLine("Creating new lolglobalaverage object");
                 avg = new LolGlobalAverage();
                 avg.RoleAndRankAndDivision = $"{role}#{rank}#{division}";
                 _dbContext?.LolGlobalAverages.Add(avg);
             }
+            _dbContext?.SaveChanges();
+            System.Diagnostics.Debug.WriteLine("Wrote to DB!");
 
             avg.Gold += gold;
             avg.MinionKills += minionKills;

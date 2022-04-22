@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NoobOfLegends.Models.Services;
 
@@ -10,9 +11,10 @@ using NoobOfLegends.Models.Services;
 namespace NoobOfLegends_BackEnd.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220329052107_Migration2")]
+    partial class Migration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,15 +164,15 @@ namespace NoobOfLegends_BackEnd.Migrations
                     b.Property<int>("AverageRank")
                         .HasColumnType("Integer");
 
-                    b.Property<long>("GameEndTime")
-                        .HasColumnType("bigint");
+                    b.Property<int>("GameEndTime")
+                        .HasColumnType("Integer");
 
                     b.Property<string>("GameMode")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(64)");
 
-                    b.Property<long>("GameStartTime")
-                        .HasColumnType("bigint");
+                    b.Property<int>("GameStartTime")
+                        .HasColumnType("Integer");
 
                     b.Property<int>("QueueId")
                         .HasColumnType("Integer");

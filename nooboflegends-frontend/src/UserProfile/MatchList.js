@@ -10,6 +10,12 @@ export default class MatchList extends Component {
         this.state = { matches: props.matches, select: props.select, deselect: props.deselect };
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.matches != prevProps.matches) {
+            this.setState({ matches: this.props.matches });
+        }
+    }
+
     render() {
         let matches = this.state.matches;
         var rows = [];
