@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import './UserProfile.css';
-import UserInfo from './UserInfo'
-import MatchList from './MatchList'
-import StatSelector from './StatSelector'
+import './UserComparison.css';
+import UserInfo from '../UserProfile/UserInfo'
+import MatchList from '../UserProfile/MatchList'
+import StatSelector from '../UserProfile/StatSelector'
 import StatChart from './StatChart'
 import GetColorSet from '../Helpers/DistinctColorGenerator'
-import SkillDisplay from './SkillDisplay';
+import SkillDisplay from '../UserProfile/SkillDisplay';
+
+const PAGE_NAME = "UserComparison"
 
 /* Component that renders an entire user profile using various sub components */
 export default class UserProfile extends Component {
@@ -17,7 +19,7 @@ export default class UserProfile extends Component {
         
 
         this.state = {
-            allMatches: [], userInfo: null, selectedMatches: [], activeStat: { id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [],
+            user1Matches: [], user2Matches: [], user1Info: null, user2Info: null, selectedMatches: [], activeStat: { id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [],
             changePage: props.changePageFunc
         };
     }
@@ -82,7 +84,9 @@ export default class UserProfile extends Component {
                 <div className='row'>
                     <div className='col-12 col-md-7 col-xl-5'>
                         <UserInfo user={this.state.userInfo} />
-                        <MatchList matches={this.state.allMatches} select={this.selectMatch} deselect={this.deselectMatch} />
+                        <MatchList matches={this.state.user1Matches} select={this.selectMatch} deselect={this.deselectMatch} />
+                        <UserInfo user={this.state.userInfo} />
+                        <MatchList matches={this.state.user2Matches} select={this.selectMatch} deselect={this.deselectMatch} />
                     </div>
                     <div className='d-none d-xl-block col-xl-1'>
                     </div>
@@ -135,7 +139,7 @@ export default class UserProfile extends Component {
                 "usernameAndTagline": usernameAndTagline
             };
 
-            this.state.changePage("Home", props, "UserProfile");
+            this.state.changePage("Home", props, PAGE_NAME);
 
         } else {
 
@@ -143,7 +147,7 @@ export default class UserProfile extends Component {
                 "error": "Server"
             };
 
-            this.state.changePage("Home", props, "UserProfile");
+            this.state.changePage("Home", props, PAGE_NAME);
         }
     }
 
@@ -165,7 +169,7 @@ export default class UserProfile extends Component {
                     "usernameAndTagline": ""
                 };
 
-                this.state.changePage("Home", props, "UserProfile");
+                this.state.changePage("Home", props, PAGE_NAME);
             }
 
             let userInfo = this.state.userInfo;
@@ -181,7 +185,7 @@ export default class UserProfile extends Component {
             for (let i = 0; i < currentMatches.length; i++)
                 currentMatches[i].color = colors[i];
 
-            this.setState({ allMatches: currentMatches, userInfo: userInfo });
+            this.setState({ user1Matches: currentMatches, user1Info: userInfo });
 
             if (!checkpoint.completed) {
                 setTimeout(await this.getCheckpointUpdate(checkpointId), 2000);
@@ -194,14 +198,14 @@ export default class UserProfile extends Component {
                 "usernameAndTagline": ""
             };
 
-            this.state.changePage("Home", props, "UserProfile");
+            this.state.changePage("Home", props, PAGE_NAME);
         } else {
             //Show Network Error
             const props = {
                 "error": "Server"
             };
 
-            this.state.changePage("Home", props, "UserProfile");
+            this.state.changePage("Home", props, PAGE_NAME);
         }
 
     }
