@@ -3,6 +3,7 @@ import NavBar from './HomePage/NavBar';
 import HomePage from './HomePage/HomePage';
 import UserProfile from './UserProfile/UserProfile';
 import LoadingPage from './LoadingPage/LoadingPage';
+import UserComparison from './UserComparison/UserComparison';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -31,6 +32,8 @@ export default class App extends Component {
             case "Profile":
                 page.push(<UserProfile key="2" changePageFunc={this.changePage} additionalProps={this.state.props} />);
                 break;
+            case "Compare":
+                page.push(<UserComparison key="3" changePageFunc={this.changePage} additionalProps={this.state.props} />)
         }
 
         return (

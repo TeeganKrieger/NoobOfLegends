@@ -17,7 +17,7 @@ export default class UserProfile extends Component {
         
 
         this.state = {
-            allMatches: [], userInfo: null, selectedMatches: [], activeStat: { id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [],
+            allMatches: [], userInfo: this.GetDefaultUserInfo(props.additionalProps.searchFor), selectedMatches: [], activeStat: { id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [],
             changePage: props.changePageFunc
         };
     }
@@ -207,19 +207,25 @@ export default class UserProfile extends Component {
     }
 
     //Testing
-    GetFakeUserInfo() {
+    GetDefaultUserInfo(usernameAndTagline) {
+        let split = usernameAndTagline.split("#");
+
+        if (split.length != 2) {
+            split = ["", ""]
+        }
+
         return {
-            "username": "Saltymate8",
-            "tagline": "NA1",
+            "username": split[0],
+            "tagline": split[1],
             "rankFlex": {
-                "rank": 7,
+                "rank": -1,
                 "tier": 0,
-                "lp": 45,
+                "lp": 0,
             },
             "rankSoloDuo": {
-                "rank": 5,
-                "tier": 3,
-                "lp": 98,
+                "rank": -1,
+                "tier": 0,
+                "lp": 0,
             }
         };
     }

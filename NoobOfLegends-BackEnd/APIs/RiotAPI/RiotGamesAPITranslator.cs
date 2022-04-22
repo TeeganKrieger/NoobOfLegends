@@ -22,7 +22,7 @@ namespace NoobOfLegends.APIs.RiotApi
         private const string ARG_NULL_EXC_MSG = "The arguement '{0}' cannot be null!";
         private const string ARG_DFT_EXC_MSG = "The arguement '{0}' cannot be the default value!";
 
-        private const string API_KEY = "RGAPI-e6ebf964-608b-4b55-9548-78f1fa109bf7";
+        private const string API_KEY = "RGAPI-c819336f-968b-474b-b807-15375261ab72";
 
         private const string URL_BASE_AMERICAS = "https://americas.api.riotgames.com/";
         private const string URL_BASE_ASIA = "https://asia.api.riotgames.com/";

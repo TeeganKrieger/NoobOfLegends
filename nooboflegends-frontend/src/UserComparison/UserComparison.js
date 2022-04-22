@@ -10,22 +10,18 @@ import SkillDisplay from '../UserProfile/SkillDisplay';
 const PAGE_NAME = "UserComparison"
 
 /* Component that renders an entire user profile using various sub components */
-export default class UserProfile extends Component {
+export default class UserComparison extends Component {
 
     constructor(props) {
         super(props);
         //let matches = props.additionalProps.matches;
         //let user = props.additionalProps.info;
-        
+
 
         this.state = {
             user1Matches: [], user2Matches: [], user1Info: null, user2Info: null, selectedMatches: [], activeStat: { id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [],
             changePage: props.changePageFunc
         };
-    }
-
-    componentDidMount() {
-        this.fetchCheckpointId(this.props.additionalProps.searchFor);
     }
 
     /* An array containing all tracked stats, their ids, names and lambda expressions */
@@ -71,6 +67,24 @@ export default class UserProfile extends Component {
         this.setState({ skills: this.GetFakeAnalysis() });
     }
 
+    async handleSearchPlayer0(event) {
+        event.preventDefault();
+
+        var usernameAndTagline = document.getElementById("player-0-search").value;
+
+        if (usernameAndTagline != null && usernameAndTagline != "")
+            this.fetchCheckpointId(usernameAndTagline, 0);
+    }
+
+    async handleSearchPlayer1(event) {
+        event.preventDefault();
+
+        var usernameAndTagline = document.getElementById("player-1-search").value;
+
+        if (usernameAndTagline != null && usernameAndTagline != "")
+            this.fetchCheckpointId(usernameAndTagline, 1);
+    }
+
     render() {
 
         var statSelectors = [];
@@ -83,9 +97,13 @@ export default class UserProfile extends Component {
             <div className='container-fluid'>
                 <div className='row'>
                     <div className='col-12 col-md-7 col-xl-5'>
-                        <UserInfo user={this.state.userInfo} />
+                        <form onSubmit={this.handleSearchPlayer0.bind(this)}>
+                            <input type="search" id="player-0-search" className="comparison-search" placeholder="Search for Player" aria-label="Search" />
+                        </form>
                         <MatchList matches={this.state.user1Matches} select={this.selectMatch} deselect={this.deselectMatch} />
-                        <UserInfo user={this.state.userInfo} />
+                        <form onSubmit={this.handleSearchPlayer1.bind(this)}>
+                            <input type="search" id="player-1-search" className="comparison-search" placeholder="Search for Player" aria-label="Search" />
+                        </form>
                         <MatchList matches={this.state.user2Matches} select={this.selectMatch} deselect={this.deselectMatch} />
                     </div>
                     <div className='d-none d-xl-block col-xl-1'>
@@ -105,7 +123,7 @@ export default class UserProfile extends Component {
 
     //Fetch
     /* Initiates a profile task on the backend and gets a checkpoint id. */
-    async fetchCheckpointId(usernameAndTagline) {
+    async fetchCheckpointId(usernameAndTagline, playerNum) {
 
         let split = usernameAndTagline.split("#");
 
@@ -114,8 +132,6 @@ export default class UserProfile extends Component {
                 "error": "BadRequest",
                 "usernameAndTagline": usernameAndTagline
             };
-
-            this.state.changePage("Home", props, "LoadingPage (31)");
             return;
         }
 
@@ -130,7 +146,7 @@ export default class UserProfile extends Component {
             const checkpointId = await checkpointResponse.text();
 
             console.log("Starting Loop");
-            this.getCheckpointUpdate(checkpointId);
+            this.getCheckpointUpdate(checkpointId, playerNum);
 
         } else if (checkpointResponse.status == 400) {
 
@@ -139,20 +155,16 @@ export default class UserProfile extends Component {
                 "usernameAndTagline": usernameAndTagline
             };
 
-            this.state.changePage("Home", props, PAGE_NAME);
-
         } else {
 
             const props = {
                 "error": "Server"
             };
-
-            this.state.changePage("Home", props, PAGE_NAME);
         }
     }
 
     /* Uses a checkpoint id to recieve occasional updates from the backend to populate the page. */
-    async getCheckpointUpdate(checkpointId) {
+    async getCheckpointUpdate(checkpointId, playerNum) {
 
         //Make Request to backend for user. If User is found, redirect to other page
         const checkpointResponse = await fetch("api/user/check/" + checkpointId, {
@@ -168,24 +180,33 @@ export default class UserProfile extends Component {
                     "error": "BadRequest",
                     "usernameAndTagline": ""
                 };
-
-                this.state.changePage("Home", props, PAGE_NAME);
             }
 
-            let userInfo = this.state.userInfo;
-            if (checkpoint.userInfo != null)
-                userInfo = checkpoint.userInfo;
+            if (playerNum == 0) {
 
+                let currentMatches = this.state.user1Matches;
+                currentMatches = currentMatches.concat(checkpoint.matches);
 
-            let currentMatches = this.state.allMatches;
-            currentMatches = currentMatches.concat(checkpoint.matches);
+                let colors = GetColorSet(currentMatches.length);
 
-            let colors = GetColorSet(currentMatches.length);
+                for (let i = 0; i < currentMatches.length; i++)
+                    currentMatches[i].color = colors[i];
 
-            for (let i = 0; i < currentMatches.length; i++)
-                currentMatches[i].color = colors[i];
+                this.setState({ user1Matches: currentMatches });
 
-            this.setState({ user1Matches: currentMatches, user1Info: userInfo });
+            } else {
+
+                let currentMatches = this.state.user2Matches;
+                currentMatches = currentMatches.concat(checkpoint.matches);
+
+                let colors = GetColorSet(currentMatches.length);
+
+                for (let i = 0; i < currentMatches.length; i++)
+                    currentMatches[i].color = colors[i];
+
+                this.setState({ user2Matches: currentMatches });
+
+            }
 
             if (!checkpoint.completed) {
                 setTimeout(await this.getCheckpointUpdate(checkpointId), 2000);
@@ -197,15 +218,11 @@ export default class UserProfile extends Component {
                 "error": "BadRequest",
                 "usernameAndTagline": ""
             };
-
-            this.state.changePage("Home", props, PAGE_NAME);
         } else {
             //Show Network Error
             const props = {
                 "error": "Server"
             };
-
-            this.state.changePage("Home", props, PAGE_NAME);
         }
 
     }

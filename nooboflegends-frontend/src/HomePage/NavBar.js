@@ -27,6 +27,11 @@ export default class NavBar extends Component {
         this.state.changePage("Home", {}, "NavBar");
     }
 
+    handleComparisonPage(event) {
+        event.preventDefault();
+        this.state.changePage("Compare", {}, "NavBar");
+    }
+
     async handleSearchSubmit(event) {
         event.preventDefault();
 
@@ -68,7 +73,7 @@ export default class NavBar extends Component {
                             <a className="nav-link" onClick={this.handleReturnHome.bind(this)}>Home</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" onClick={this.doNothing()}>Compare</a>
+                            <a className="nav-link" onClick={this.handleComparisonPage.bind(this)}>Compare</a>
                         </li>
                     </ul>
 
