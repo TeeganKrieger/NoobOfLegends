@@ -63,8 +63,8 @@ namespace NoobOfLegends_BackEnd.Controllers
         //    if (summoner == null)
         //        return BadRequest();
 
-        //    RiotRankedResult[] rankedResults = await _translator.GetSummonerRankedData(summoner);
 
+        //    RiotRankedResult[] rankedResults = await _translator.GetSummonerRankedData(summoner);
         //    return Ok(new UserInfoResult(username, tagline, rankedResults));
         //}
 
