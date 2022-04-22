@@ -24,7 +24,7 @@ export default class SkillDisplay extends Component {
         for (let i = 0; i < skills.length; i++) {
             skillsArr.push(
                 <div key={"skill_" + i} className={"skill " + (skills[i].good ? "good" : "bad")}>
-                    <span>{skills[i].name}</span>
+                    <a src={skills[i].url}>{skills[i].skillName}</a>
                 </div>
             );
         }
