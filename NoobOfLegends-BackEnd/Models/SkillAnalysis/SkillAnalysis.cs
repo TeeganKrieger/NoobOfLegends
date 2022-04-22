@@ -70,7 +70,7 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
             {
                 {"TOP", 0},
                 {"JUNGLE", 0},
-                {"MID", 0},
+                {"MIDDLE", 0},
                 {"BOTTOM", 0},
                 {"SUPPORT", 0}
             };
@@ -78,20 +78,20 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
             // Create average data from select matches
             MatchParticipant averageVals = new MatchParticipant();
 
-            foreach (string matchId in input.matchIDs)
+            foreach (string matchId in input.MatchIDs)
             {
                 Match match = _dbContext?.Matches.Where(x => x.MatchID == matchId).FirstOrDefault();
 
                 if (match != null)
                 {
-                    MatchParticipant participant = match.Participants.Where(x => x.PlayerName == input.username).FirstOrDefault();
+                    MatchParticipant participant = match.Participants.Where(x => x.PlayerName == input.Username).FirstOrDefault();
 
                     if (participant != null)
                     {
                         // Add values to the user's average across all matches in list
                         averageVals.Gold += participant.Gold;
                         averageVals.XP += participant.XP;
-                        averageVals.Kills += participant.XP;
+                        averageVals.Kills += participant.Kills;
                         averageVals.Deaths += participant.Deaths;
                         averageVals.TimeSpentDead += participant.TimeSpentDead;
                         averageVals.Assists += participant.Assists;
@@ -102,36 +102,39 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
                         averageVals.HealingToChampions += participant.HealingToChampions;
 
                         // Average Role is determined by most frequent role. Increase values in dictionary by 1
-                        countRoles[averageVals.ActualRole] += 1;
+                        if (averageVals.ActualRole != null)
+                            countRoles[averageVals.ActualRole] += 1;
+                        else
+                            countRoles["MIDDLE"] += 1;
                     }
                 }
             }
 
             // Get the average of the user's selected matches
-            averageVals.Gold /= input.matchIDs.Length;
-            averageVals.XP /= input.matchIDs.Length;
-            averageVals.Kills /= input.matchIDs.Length;
-            averageVals.Deaths /= input.matchIDs.Length;
-            averageVals.TimeSpentDead /= input.matchIDs.Length;
-            averageVals.Assists /= input.matchIDs.Length;
-            averageVals.BaronKills /= input.matchIDs.Length;
-            averageVals.DragonKills /= input.matchIDs.Length;
-            averageVals.JungleMinionKills /= input.matchIDs.Length;
-            averageVals.VisionScore /= input.matchIDs.Length;
-            averageVals.HealingToChampions /= input.matchIDs.Length;
+            averageVals.Gold /= input.MatchIDs.Length;
+            averageVals.XP /= input.MatchIDs.Length;
+            averageVals.Kills /= input.MatchIDs.Length;
+            averageVals.Deaths /= input.MatchIDs.Length;
+            averageVals.TimeSpentDead /= input.MatchIDs.Length;
+            averageVals.Assists /= input.MatchIDs.Length;
+            averageVals.BaronKills /= input.MatchIDs.Length;
+            averageVals.DragonKills /= input.MatchIDs.Length;
+            averageVals.JungleMinionKills /= input.MatchIDs.Length;
+            averageVals.VisionScore /= input.MatchIDs.Length;
+            averageVals.HealingToChampions /= input.MatchIDs.Length;
 
             // Get the user's most played role from match selection
-            var averageRole = countRoles.OrderByDescending(x => x.Value).First();
+            var averageRole = countRoles.OrderByDescending(x => x.Value).First().Key;
 
             //Compare unranked players to average ranked players
-            if (input.rank == "")
+            if (input.Rank == null || input.Rank == "" || input.Rank == "Unranked")
             {
-                input.rank = "Gold";
-                input.division = "IV";
+                input.Rank = "Gold";
+                input.Division = "IV";
             }
 
             // Get global average that matches player's rank/division/role
-            LolGlobalAverage globalAverage= _dbContext?.LolGlobalAverages.Where(x => x.RoleAndRankAndDivision == $"{averageRole}#{input.rank}#{input.division}").FirstOrDefault();
+            LolGlobalAverage globalAverage= _dbContext?.LolGlobalAverages.Where(x => x.RoleAndRankAndDivision == $"{averageRole}#{input.Rank}#{input.Division}").FirstOrDefault();
 
             List<Tuple<string, bool, string>> skillsToReturn = new List<Tuple<string, bool, string>>();
 

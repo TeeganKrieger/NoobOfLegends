@@ -6,6 +6,7 @@ import StatSelector from './StatSelector'
 import StatChart from './StatChart'
 import GetColorSet from '../Helpers/DistinctColorGenerator'
 import SkillDisplay from './SkillDisplay';
+import RankedHelper from '../Helpers/RankedIconHelper'
 
 /* Component that renders an entire user profile using various sub components */
 export default class UserProfile extends Component {
@@ -92,7 +93,7 @@ export default class UserProfile extends Component {
                     <div className='col-12 col-md-4'>
                         <SkillDisplay skills={this.state.skills} />
                         <StatChart stat={this.state.activeStat} matches={this.state.selectedMatches} />
-                        <button className="analyze" onClick={this.populateSkills.bind(this)}>Analyze</button>
+                        <button className="analyze" onClick={this.fetchSkills.bind(this)}>Analyze</button>
                     </div>
                 </div>
             </div>
@@ -202,6 +203,45 @@ export default class UserProfile extends Component {
             };
 
             this.state.changePage("Home", props, "UserProfile");
+        }
+
+    }
+
+    async fetchSkills() {
+        let username = this.state.userInfo.username;
+        let rank = RankedHelper.GetRankedName(this.state.userInfo.rankSoloDuo.rank);
+        let tier = RankedHelper.GetRankedTierName(this.state.userInfo.rankSoloDuo.tier);
+        let matches = this.state.selectedMatches.map(a => a.id);
+
+        let json = {
+            "username": username,
+            "rank": rank,
+            "division": tier,
+            "matchIDs": matches
+        };
+
+        let strJson = JSON.stringify(json);
+
+        const response = await fetch("api/skills/get/", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: strJson
+        });
+
+        if (response.status == 200) {
+
+            const skills = await response.json();
+            this.setState({ skills: skills });
+
+        } else if (response.status == 400) {
+
+            console.log("Error with skills! (400)");
+
+        } else {
+            console.log("Error with skills! (Misc)");
         }
 
     }

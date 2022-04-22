@@ -15,8 +15,8 @@ namespace NoobOfLegends_BackEnd.Controllers
             this._dbContext = dbContext;
         }
 
-        [HttpGet("/api/skills/get/")]
-        public async Task<IActionResult> GetSkills(SkillAnalysisInput input)
+        [HttpPost("/api/skills/get/")]
+        public async Task<IActionResult> GetSkills([FromBody] SkillAnalysisInput input)
         {
             try
             {
@@ -39,18 +39,23 @@ namespace NoobOfLegends_BackEnd.Controllers
 
         public class SkillAnalysisInput
         {
-            public SkillAnalysisInput(string username, string rank, string division, string[] matchIDs)
+            public SkillAnalysisInput()
             {
-                this.username = username;
-                this.rank = rank;
-                this.division = division;
-                this.matchIDs = matchIDs;
+
             }
 
-            public string username { get; set; }
-            public string rank { get; set; }
-            public string division { get; set; }
-            public string[] matchIDs { get; set; }
+            public SkillAnalysisInput(string username, string rank, string division, string[] matchIDs)
+            {
+                this.Username = username;
+                this.Rank = rank;
+                this.Division = division;
+                this.MatchIDs = matchIDs;
+            }
+
+            public string Username { get; set; }
+            public string Rank { get; set; }
+            public string Division { get; set; }
+            public string[] MatchIDs { get; set; }
         }
 
         public class SkillResult
