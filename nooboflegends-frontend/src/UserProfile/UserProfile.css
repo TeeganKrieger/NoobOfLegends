@@ -10,3 +10,7 @@ button.analyze {
     border: 4px ridge var(--league-gold);
     color: white;
 }
+
+#user-profile-parent > .match-list {
+    max-height: 30rem;
+}

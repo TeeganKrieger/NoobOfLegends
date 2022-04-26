@@ -15,6 +15,7 @@ export default class App extends Component {
     }
 
     changePage = (pageId, props, caller) => {
+        this.setState({ page: "", props: {} });
         this.setState({ page: pageId, props: props });
     }
 
