@@ -22,9 +22,18 @@ export default class SkillDisplay extends Component {
         let skillsArr = [];
 
         for (let i = 0; i < skills.length; i++) {
+            let url = skills[i].url;
+            if (url == "")
+                url = null;
+
+            let anchor = <a href={url} className='skill-anchor' target="_blank">{skills[i].skillName}</a>;
+            if (url == null) {
+                anchor = <span className='skill-span'>{skills[i].skillName}</span>;
+            }
+
             skillsArr.push(
                 <div key={"skill_" + i} className={"skill " + (skills[i].good ? "good" : "bad")}>
-                    <a src={skills[i].url}>{skills[i].skillName}</a>
+                    {anchor}
                 </div>
             );
         }

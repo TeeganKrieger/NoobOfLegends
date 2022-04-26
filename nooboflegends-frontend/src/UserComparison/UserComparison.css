@@ -1,27 +1,32 @@
 
-button.analyze {
-    display: block;
-    width: 80%;
-    margin: auto;
-    font-size: 2.5rem;
-    outline: none;
-    margin-top: 1.5rem;
-    background: #02305E;
-    border: 4px ridge var(--league-gold);
-    color: white;
-}
-
 .comparison-search {
-    display: block;
     background: white;
     border: 2px solid grey;
     border-radius: 0.25rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    margin-right: auto;
+    margin-right: 0;
     margin-left: auto;
-    width: 80%;
+    width: 65%;
     height: 2.5rem;
     outline: none;
     font-size: 1.5rem;
+}
+
+#user-comparison-parent > .match-list {
+    max-height: 20rem;
+}
+
+button#player-0-submit,
+button#player-1-submit {
+    color: var(--league-gold);
+    border: 1px solid var(--league-gold);
+    border-radius: 2px;
+    outline: none;
+    height: 2.5rem;
+    width: 15%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-right: auto;
+    vertical-align: middle;
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './UserProfile.css';
 import UserInfo from './UserInfo'
 import MatchList from './MatchList'
 import StatSelector from './StatSelector'
@@ -7,6 +6,7 @@ import StatChart from './StatChart'
 import GetColorSet from '../Helpers/DistinctColorGenerator'
 import SkillDisplay from './SkillDisplay';
 import RankedHelper from '../Helpers/RankedIconHelper'
+import './UserProfile.css';
 
 /* Component that renders an entire user profile using various sub components */
 export default class UserProfile extends Component {
@@ -25,6 +25,13 @@ export default class UserProfile extends Component {
 
     componentDidMount() {
         this.fetchCheckpointId(this.props.additionalProps.searchFor);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.additionalProps.searchFor != prevProps.additionalProps.searchFor) {
+            this.setState({ allMatches: [], userInfo: this.GetDefaultUserInfo(this.props.additionalProps.searchFor), selectedMatches: [], skills: [] });
+            this.fetchCheckpointId(this.props.additionalProps.searchFor);
+        }
     }
 
     /* An array containing all tracked stats, their ids, names and lambda expressions */
@@ -81,7 +88,7 @@ export default class UserProfile extends Component {
         return (
             <div className='container-fluid'>
                 <div className='row'>
-                    <div className='col-12 col-md-7 col-xl-5'>
+                    <div id='user-profile-parent' className='col-12 col-md-7 col-xl-5'>
                         <UserInfo user={this.state.userInfo} />
                         <MatchList matches={this.state.allMatches} select={this.selectMatch} deselect={this.deselectMatch} />
                     </div>
@@ -177,7 +184,8 @@ export default class UserProfile extends Component {
             let currentMatches = this.state.allMatches;
             currentMatches = currentMatches.concat(checkpoint.matches);
 
-            let colors = GetColorSet(currentMatches.length);
+            let colorSeed = this.state.userInfo.username ?? "Default";
+            let colors = GetColorSet(colorSeed, 100);
 
             for (let i = 0; i < currentMatches.length; i++)
                 currentMatches[i].color = colors[i];
@@ -213,6 +221,12 @@ export default class UserProfile extends Component {
         let tier = RankedHelper.GetRankedTierName(this.state.userInfo.rankSoloDuo.tier);
         let matches = this.state.selectedMatches.map(a => a.id);
 
+        this.setState({ skills: [] });
+
+        if (matches.length == 0) {
+            return;
+        }
+
         let json = {
             "username": username,
             "rank": rank,
@@ -230,6 +244,8 @@ export default class UserProfile extends Component {
             },
             body: strJson
         });
+
+        await new Promise(r => setTimeout(r, 1000));
 
         if (response.status == 200) {
 
@@ -258,12 +274,12 @@ export default class UserProfile extends Component {
             "username": split[0],
             "tagline": split[1],
             "rankFlex": {
-                "rank": -1,
+                "rank": -2,
                 "tier": 0,
                 "lp": 0,
             },
             "rankSoloDuo": {
-                "rank": -1,
+                "rank": -2,
                 "tier": 0,
                 "lp": 0,
             }

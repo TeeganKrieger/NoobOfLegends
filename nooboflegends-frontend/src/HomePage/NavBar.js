@@ -37,11 +37,15 @@ export default class NavBar extends Component {
 
         let usernameAndTagline = document.getElementById("navbar-search").value;
 
+        if (usernameAndTagline == null || usernameAndTagline == "") {
+            return;
+        }
+
         let search = {
             "searchFor": usernameAndTagline
         };
 
-        this.state.changePage("Loading", search, "NavBar");
+        this.state.changePage("Profile", search, "NavBar");
     }
 
     render() {

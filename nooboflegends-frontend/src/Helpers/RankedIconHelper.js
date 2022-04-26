@@ -10,12 +10,15 @@ import diamondIcon from '../Resources/RankedIcons/Emblem_Diamond.png';
 import masterIcon from '../Resources/RankedIcons/Emblem_Master.png';
 import grandmasterIcon from '../Resources/RankedIcons/Emblem_Grandmaster.png';
 import challengerIcon from '../Resources/RankedIcons/Emblem_Challenger.png';
+import loadingIcon from '../Resources/MiscIcons/Loading.svg'
 
 export default {
 
     /* Get the icon associated with a specific rank */
      GetRankedIcon(rank) {
         switch (rank) {
+            case -2:
+                return loadingIcon;
             case -1:
                 return unrankedIcon;
             case 1:
@@ -41,6 +44,8 @@ export default {
     /* Get the full proper name associated with a specific rank */
     GetRankedName(rank) {
         switch (rank) {
+            case -2:
+                return "Loading...";
             case -1:
                 return "Unranked";
             case 1:

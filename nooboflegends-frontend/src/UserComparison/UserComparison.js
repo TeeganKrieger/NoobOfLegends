@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './UserComparison.css';
 import UserInfo from '../UserProfile/UserInfo'
 import MatchList from '../UserProfile/MatchList'
 import StatSelector from '../UserProfile/StatSelector'
 import StatChart from './StatChart'
 import GetColorSet from '../Helpers/DistinctColorGenerator'
 import SkillDisplay from '../UserProfile/SkillDisplay';
+import './UserComparison.css';
 
 const PAGE_NAME = "UserComparison"
 
@@ -72,6 +72,16 @@ export default class UserComparison extends Component {
 
         var usernameAndTagline = document.getElementById("player-0-search").value;
 
+        var user1Matches = this.state.user1Matches;
+        var newSelectedMatches = [];
+        
+        this.state.selectedMatches.forEach(e => {
+            if (!user1Matches.includes(e))
+                newSelectedMatches.push(e);
+        });
+
+        this.setState({ user1Matches: [], user1Info: { username: usernameAndTagline.split("#")[0] }, selectedMatches: newSelectedMatches });
+
         if (usernameAndTagline != null && usernameAndTagline != "")
             this.fetchCheckpointId(usernameAndTagline, 0);
     }
@@ -80,6 +90,17 @@ export default class UserComparison extends Component {
         event.preventDefault();
 
         var usernameAndTagline = document.getElementById("player-1-search").value;
+
+        var user2Matches = this.state.user2Matches;
+        var newSelectedMatches = [];
+
+        this.state.selectedMatches.forEach(e => {
+            if (!user2Matches.includes(e))
+                newSelectedMatches.push(e);
+        });
+
+        this.setState({ user2Matches: [], user2Info: { username: usernameAndTagline.split("#")[0] }, selectedMatches: newSelectedMatches });
+
 
         if (usernameAndTagline != null && usernameAndTagline != "")
             this.fetchCheckpointId(usernameAndTagline, 1);
@@ -96,13 +117,19 @@ export default class UserComparison extends Component {
         return (
             <div className='container-fluid'>
                 <div className='row'>
-                    <div className='col-12 col-md-7 col-xl-5'>
+                    <div id='user-comparison-parent' className='col-12 col-md-7 col-xl-5'>
                         <form onSubmit={this.handleSearchPlayer0.bind(this)}>
-                            <input type="search" id="player-0-search" className="comparison-search" placeholder="Search for Player" aria-label="Search" />
+                            <div className="input-group">
+                                <input type="search" id="player-0-search" className="comparison-search" placeholder="Search for Player 1" aria-label="Search" />
+                                <button id="player-0-submit" className="btn" type="submit">Search</button>
+                            </div>
                         </form>
                         <MatchList matches={this.state.user1Matches} select={this.selectMatch} deselect={this.deselectMatch} />
                         <form onSubmit={this.handleSearchPlayer1.bind(this)}>
-                            <input type="search" id="player-1-search" className="comparison-search" placeholder="Search for Player" aria-label="Search" />
+                            <div className="input-group">
+                                <input type="search" id="player-1-search" className="comparison-search" placeholder="Search for Player 2" aria-label="Search" />
+                                <button id="player-1-submit" className="btn" type="submit">Search</button>
+                            </div>
                         </form>
                         <MatchList matches={this.state.user2Matches} select={this.selectMatch} deselect={this.deselectMatch} />
                     </div>
@@ -112,9 +139,7 @@ export default class UserComparison extends Component {
                         {statSelectors}
                     </div>
                     <div className='col-12 col-md-4'>
-                        <SkillDisplay skills={this.state.skills} />
                         <StatChart stat={this.state.activeStat} matches={this.state.selectedMatches} />
-                        <button className="analyze" onClick={this.populateSkills.bind(this)}>Analyze</button>
                     </div>
                 </div>
             </div>
@@ -187,7 +212,8 @@ export default class UserComparison extends Component {
                 let currentMatches = this.state.user1Matches;
                 currentMatches = currentMatches.concat(checkpoint.matches);
 
-                let colors = GetColorSet(currentMatches.length);
+                let colorSeed = this.state.user1Info.username ?? "Default";
+                let colors = GetColorSet(colorSeed, 100);
 
                 for (let i = 0; i < currentMatches.length; i++)
                     currentMatches[i].color = colors[i];
@@ -199,7 +225,8 @@ export default class UserComparison extends Component {
                 let currentMatches = this.state.user2Matches;
                 currentMatches = currentMatches.concat(checkpoint.matches);
 
-                let colors = GetColorSet(currentMatches.length);
+                let colorSeed = this.state.user2Info.username ?? "Default";
+                let colors = GetColorSet(colorSeed, 100);
 
                 for (let i = 0; i < currentMatches.length; i++)
                     currentMatches[i].color = colors[i];
@@ -209,7 +236,7 @@ export default class UserComparison extends Component {
             }
 
             if (!checkpoint.completed) {
-                setTimeout(await this.getCheckpointUpdate(checkpointId), 2000);
+                setTimeout(await this.getCheckpointUpdate(checkpointId, playerNum), 2000);
             }
 
         } else if (checkpointResponse.status == 400) {
@@ -226,204 +253,4 @@ export default class UserComparison extends Component {
         }
 
     }
-
-    //Testing
-    GetFakeUserInfo() {
-        return {
-            "username": "Saltymate8",
-            "tagline": "NA1",
-            "rankFlex": {
-                "rank": 7,
-                "tier": 0,
-                "lp": 45,
-            },
-            "rankSoloDuo": {
-                "rank": 5,
-                "tier": 3,
-                "lp": 98,
-            }
-        };
-    }
-
-    GetFakeMatches() {
-        return [
-            {
-                "id": "NA_1",
-                "queue": 0,
-                "champion": "Zeri",
-                "position": "MID",
-                "averageRank": 6,
-                "won": true,
-                "playedOn": 1647304576,
-                "gold": 19500,
-                "kills": 7,
-                "deaths": 12,
-                "assists": 6
-            },
-            {
-                "id": "NA_2",
-                "queue": 1,
-                "champion": "DrMundo",
-                "position": "MID",
-                "averageRank": 0,
-                "won": false,
-                "playedOn": 1647290191,
-                "gold": 19500,
-                "kills": 12,
-                "deaths": 7,
-                "assists": 3
-            },
-            {
-                "id": "NA_3",
-                "queue": 0,
-                "champion": "MonkeyKing",
-                "position": "BOT",
-                "averageRank": 7,
-                "won": false,
-                "playedOn": 1647290191,
-                "gold": 19500,
-                "kills": 9,
-                "deaths": 2,
-                "assists": 4
-            },
-            {
-                "id": "NA_4",
-                "queue": 0,
-                "champion": "Zeri",
-                "position": "MID",
-                "averageRank": 6,
-                "won": true,
-                "playedOn": 1647290191,
-                "gold": 19500,
-                "kills": 7,
-                "deaths": 12,
-                "assists": 6
-            },
-            {
-                "id": "NA_5",
-                "queue": 1,
-                "champion": "DrMundo",
-                "position": "MID",
-                "averageRank": 0,
-                "won": false,
-                "playedOn": 21847214,
-                "gold": 19500,
-                "kills": 12,
-                "deaths": 7,
-                "assists": 3
-            },
-            {
-                "id": "NA_6",
-                "queue": 0,
-                "champion": "MonkeyKing",
-                "position": "BOT",
-                "averageRank": 7,
-                "won": false,
-                "playedOn": 312832111,
-                "gold": 19500,
-                "kills": 9,
-                "deaths": 2,
-                "assists": 4
-            },
-            {
-                "id": "NA_7",
-                "queue": 0,
-                "champion": "Zeri",
-                "position": "MID",
-                "averageRank": 6,
-                "won": true,
-                "playedOn": 192883851,
-                "gold": 19500,
-                "kills": 7,
-                "deaths": 12,
-                "assists": 6
-            },
-            {
-                "id": "NA_8",
-                "queue": 1,
-                "champion": "DrMundo",
-                "position": "MID",
-                "averageRank": 0,
-                "won": false,
-                "playedOn": 21847214,
-                "gold": 19500,
-                "kills": 12,
-                "deaths": 7,
-                "assists": 3
-            },
-            {
-                "id": "NA_9",
-                "queue": 0,
-                "champion": "MonkeyKing",
-                "position": "BOT",
-                "averageRank": 7,
-                "won": false,
-                "playedOn": 312832111,
-                "gold": 19500,
-                "kills": 9,
-                "deaths": 2,
-                "assists": 4
-            },
-            {
-                "id": "NA_10",
-                "queue": 0,
-                "champion": "Zeri",
-                "position": "MID",
-                "averageRank": 6,
-                "won": true,
-                "playedOn": 192883851,
-                "gold": 19500,
-                "kills": 7,
-                "deaths": 12,
-                "assists": 6
-            },
-            {
-                "id": "NA_11",
-                "queue": 1,
-                "champion": "DrMundo",
-                "position": "MID",
-                "averageRank": 0,
-                "won": false,
-                "playedOn": 21847214,
-                "gold": 19500,
-                "kills": 12,
-                "deaths": 7,
-                "assists": 3
-            },
-            {
-                "id": "NA_12",
-                "queue": 0,
-                "champion": "MonkeyKing",
-                "position": "BOT",
-                "averageRank": 7,
-                "won": false,
-                "playedOn": 312832111,
-                "gold": 19500,
-                "kills": 9,
-                "deaths": 2,
-                "assists": 4
-            }
-        ];
-    }
-
-    GetFakeAnalysis() {
-        let allSkills = [
-            { name: "Poor CS", good: false },
-            { name: "Low Vision Score", good: false },
-            { name: "High Kill Participation", good: true },
-            { name: "Low Deaths", good: true },
-            { name: "Low Healing", good: false },
-            { name: "High Kills", good: true },
-            { name: "Low Gold", good: false },
-            { name: "Low Damage", good: false },
-        ];
-
-        let skills = [];
-
-        for (let i = 0; i < Math.random() * allSkills.length; i++) {
-            skills.push(allSkills[i]);
-        }
-        return skills;
-    }
-
 }

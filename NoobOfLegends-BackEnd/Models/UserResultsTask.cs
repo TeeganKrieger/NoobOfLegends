@@ -40,7 +40,15 @@ namespace NoobOfLegends_BackEnd.Models
                 _translator =
                     scope.ServiceProvider.GetRequiredService<RiotGamesApiTranslator>();
 
-                await DoWork();
+                try
+                {
+                    await DoWork();
+                }
+                catch (Exception ex)
+                {
+                    lastError = 500;
+                    completionEstimate = 1.0f;
+                }
             }
         }
 
@@ -133,8 +141,16 @@ namespace NoobOfLegends_BackEnd.Models
 
             foreach (Match match in matches)
             {
-                matchesList.TryAdd(matchIndex++, new MatchDataResult(match, summoner));
-                completionEstimate += 0.01f;
+                try
+                {
+                    matchesList.TryAdd(matchIndex++, new MatchDataResult(match, summoner));
+                    completionEstimate += 0.01f;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    completionEstimate += 0.01f;
+                    continue;
+                }
             }
 
             //Fetch Matches

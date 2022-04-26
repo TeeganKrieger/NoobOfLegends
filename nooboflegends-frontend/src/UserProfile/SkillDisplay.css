@@ -26,6 +26,19 @@
     }
 }
 
+.skill-anchor {
+    text-decoration: none;
+    color: var(--league-white);
+}
+
+.skill-anchor:hover {
+    color: var(--league-gold);
+}
+
+.skill-span {
+    color: var(--league-white);
+}
+
 .skill {
     color: white;
     border-radius: 0.25rem;
