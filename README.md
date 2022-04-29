@@ -128,7 +128,7 @@ Below are the instructions to install the project.
 ## USAGE 
 Enter Noob of Legends, this application streamlines the experience of analyzing a player’s gameplay by providing an extremely simple, new user friendly, interface.
 
-    Our application allows for users to lookup their own or other player’s profiles and view ranked information and recent matches. Users will also be able to select groups of matches to be analyzed by our skill analysis system, which will provide users with a list of skills they 
+Our application allows for users to lookup their own or other player’s profiles and view ranked information and recent matches. Users will also be able to select groups of matches to be analyzed by our skill analysis system, which will provide users with a list of skills they 
 could be making improvements upon, as well as providing links to useful guides these players could consult. 
 
 Starting Noob of Legends out with the home page that provides a search functionality, allowing users to input a League of Legends username and fetch results about themselves.
