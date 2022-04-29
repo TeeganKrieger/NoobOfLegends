@@ -24,11 +24,11 @@
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#optional-but-recommended-counterparts">Optional but recommended counterparts</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#building-and-running">Building and Running</a></li>
       </ul>
     </li>
+    <li><a href="#usage">Usage</a></li>
     <li><a href="#deployment">Deployment</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
   </ol>
 </details>
 
@@ -37,7 +37,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Noob of Legends is a player resource application for League of Legends players that will allow users to gain insights into their gameplay statistics. Unlike other player resource apps, Noob of Legends will provide a thorough examination of user statistics and allow players to compare their own statistics with those of other players. The application will also provide curated suggestions on areas where players could improve their gameplay. The goal of this project  is to develop a functional and useful application within an extremely limited time constraint of only 3 months.
+Noob of Legends is a player resource application for League of Legends players that will allow users to gain insights into their gameplay statistics. Unlike other player resource apps, Noob of Legends provides a thorough examination of user statistics and allow players to compare their own statistics with those of other players. The application also provides curated suggestions on areas where players could improve their gameplay. The goal of this project  is to develop a functional and useful application within an extremely limited time constraint of only 3 months.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -104,11 +104,16 @@ Below are the instructions to install the project.
 
 ### Building and Running
 
+First of all, We high recommend using Visual Studio Community over Visual Studio Code, however, instructions are provided for both.
+
+Before building and running, ensure you follow the Creating a Database and Connecting to a database instructions inside the <a href="/NoobOfLegends-BackEnd/DATABASE.md">Database.md</a> file.
+
 * Visual Studio Community
 
      1. Open the solution (.sln) file included within the project.
-     2. Click the build button (f5) at the top of the visual studio window
-     3. Both the Frontend and Backend applications will run. 
+     2. Ensure that both projects are set as startup projects. To do this, right click the solution file in the project explorer, click properties, navigate to startup project and set the action of both the frontend and backend to "Start". 
+     3. Click the build button (f5) at the top of the visual studio window
+     4. Both the Frontend and Backend applications will run. 
 
 * Visual Studio Code
 
@@ -125,29 +130,21 @@ Below are the instructions to install the project.
 
 
 <!-- USAGE EXAMPLES -->
-## USAGE 
-Enter Noob of Legends, this application streamlines the experience of analyzing a player’s gameplay by providing an extremely simple, new user friendly, interface.
+## Usage 
 
-Our application allows for users to lookup their own or other player’s profiles and view ranked information and recent matches. Users will also be able to select groups of matches to be analyzed by our skill analysis system, which will provide users with a list of skills they 
+The Noob Of Legends Application allows for users to lookup their own or other player’s profiles and view ranked information and recent matches. Users will also be able to select groups of matches to be analyzed by our skill analysis system, which will provide users with a list of skills they 
 could be making improvements upon, as well as providing links to useful guides these players could consult. 
 
-Starting Noob of Legends out with the home page that provides a search functionality, allowing users to input a League of Legends username and fetch results about themselves.
+Starting Noob of Legends will present you with the home page. The home page provides a search functionality, allowing users to input a Riot Game's username and tagline and fetch results about that player.
 
-These results as well as the player's ranking information will be displayed on the following page of the application, the Player Profile page. The Player Profile page will display the player's recent matches and information about those matches. By selecting matches from the list displayed, you will also be able to facilitate comparisons 
-between the player's own matches. The matches selected will then be displayed on the graph to the right of the page and will provide a data analysis option, that when clicked, will perform analysis over the user’s current history.
+<img src="images/Home.png" />
 
-Another feature of the application is the Player Comparison Page. In similarity to the Played Profile page, users can search for two different users with the search functionality which will then display the player's recent matches and information about those matches. When the matches that are 
-being analyzed are selected, the graph will then display a color coded comparison of the player's and their recent matches. 
-## Deployment
+Performing a search will bring you to the player profile page, where a player's ranking information and match history will be displayed. The Player Profile also allows for the selection of matches for the purpose of comparing statistic and for the analysis of those matches. By selecting matches from the match list, these matches will be displayed in the stat comparison chart on the right. When a user clicks the analyze button under the chart, skill analysis will be performed. Skills a player could improve upon will be displayed above the chart.
 
-This section will eventually detail deployment instructions
+<img src="images/PlayerProfile.png" />
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+Another feature of the application is the Player Comparison Page. In similarity to the Player Profile page, users can search for two different users with the search functionality which will then display the player's recent matches. These matches can also be selected and compared using the stat comparison chart. This page serves the purpose of doing direct comparisons between different players.
 
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-This section should eventually detail our standards for commit and pull request documentation.
+<img src="images/PlayerComparison.png" />
 
 <p align="right">(<a href="#top">back to top</a>)</p>
