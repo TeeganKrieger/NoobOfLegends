@@ -125,6 +125,19 @@ Below are the instructions to install the project.
 
 
 <!-- USAGE EXAMPLES -->
+## USAGE 
+Enter Noob of Legends, this application streamlines the experience of analyzing a player’s gameplay by providing an extremely simple, new user friendly, interface.
+
+    Our application allows for users to lookup their own or other player’s profiles and view ranked information and recent matches. Users will also be able to select groups of matches to be analyzed by our skill analysis system, which will provide users with a list of skills they 
+could be making improvements upon, as well as providing links to useful guides these players could consult. 
+
+Starting Noob of Legends out with the home page that provides a search functionality, allowing users to input a League of Legends username and fetch results about themselves.
+
+These results as well as the player's ranking information will be displayed on the following page of the application, the Player Profile page. The Player Profile page will display the player's recent matches and information about those matches. By selecting matches from the list displayed, you will also be able to facilitate comparisons 
+between the player's own matches. The matches selected will then be displayed on the graph to the right of the page and will provide a data analysis option, that when clicked, will perform analysis over the user’s current history.
+
+Another feature of the application is the Player Comparison Page. In similarity to the Played Profile page, users can search for two different users with the search functionality which will then display the player's recent matches and information about those matches. When the matches that are 
+being analyzed are selected, the graph will then display a color coded comparison of the player's and their recent matches. 
 ## Deployment
 
 This section will eventually detail deployment instructions
