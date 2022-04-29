@@ -6,6 +6,9 @@ using NoobOfLegends.Models.Database;
 
 namespace NoobOfLegends_BackEnd.Controllers
 {
+    /// <summary>
+    /// Class that contains logic for Skill Analysis API endpoints.
+    /// </summary>
     public class SkillAnalysisController : Controller
     {
         private readonly AppDbContext _dbContext;
@@ -15,6 +18,11 @@ namespace NoobOfLegends_BackEnd.Controllers
             this._dbContext = dbContext;
         }
 
+        /// <summary>
+        /// When provided a SkillAnalysisInput object as the body of the request, returns a list of skill objects.
+        /// </summary>
+        /// <param name="input">The input used to calculate skill analysis.</param>
+        /// <returns>Returns a list of skill objects.</returns>
         [HttpPost("/api/skills/get/")]
         public async Task<IActionResult> GetSkills([FromBody] SkillAnalysisInput input)
         {
@@ -37,6 +45,9 @@ namespace NoobOfLegends_BackEnd.Controllers
             }
         }
 
+        /// <summary>
+        /// Data model used for the input to the GetSkills api call.
+        /// </summary>
         public class SkillAnalysisInput
         {
             public SkillAnalysisInput()
@@ -58,6 +69,9 @@ namespace NoobOfLegends_BackEnd.Controllers
             public string[] MatchIDs { get; set; }
         }
 
+        /// <summary>
+        /// Data model used as the return result from the GetSkills api call.
+        /// </summary>
         public class SkillResult
         {
             public string SkillName { get; set; }

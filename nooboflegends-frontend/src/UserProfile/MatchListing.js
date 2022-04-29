@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import './MatchListing.css';
-import GetPositionIcon from '../Helpers/PositionIconHelper'
 import GetChampionIcon from '../Helpers/ChampionHelper'
 
-/* Component that displays a single match within a match list */
+/** Component that displays a single match within a match list */
 export default class MatchListing extends Component {
 
     constructor(props) {
@@ -11,7 +10,7 @@ export default class MatchListing extends Component {
         this.state = { match: props.match, select: props.select, deselect: props.deselect };
     }
 
-    /* Toggles selection state of the current match */
+    /** Toggles selection state of the current match */
     toggleSelect() {
         let match = this.state.match;
         let select = this.state.select;
@@ -30,7 +29,10 @@ export default class MatchListing extends Component {
         }
     }
 
-    /* Converts a unix timestap into a date string formatted as M/D/Y H:M */
+    /**
+     * Converts a unix timestap into a date string formatted as M/D/Y H:M
+     * @param {any} timestamp The unix timestamp to convert.
+     */
     unixTimeToDate(timestamp) {
         let date = new Date(timestamp);
         let day = date.getDate();

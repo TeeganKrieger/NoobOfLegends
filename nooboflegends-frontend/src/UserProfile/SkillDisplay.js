@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './SkillDisplay.css';
 
-/* Component that displays multiple skills */
+/** Component that displays multiple skills */
 export default class SkillDisplay extends Component {
 
     constructor(props) {

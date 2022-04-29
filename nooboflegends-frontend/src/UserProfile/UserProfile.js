@@ -8,14 +8,11 @@ import SkillDisplay from './SkillDisplay';
 import RankedHelper from '../Helpers/RankedIconHelper'
 import './UserProfile.css';
 
-/* Component that renders an entire user profile using various sub components */
+/** Component that renders an entire user profile using various sub components. */
 export default class UserProfile extends Component {
 
     constructor(props) {
         super(props);
-        //let matches = props.additionalProps.matches;
-        //let user = props.additionalProps.info;
-        
 
         this.state = {
             allMatches: [], userInfo: this.GetDefaultUserInfo(props.additionalProps.searchFor), selectedMatches: [], activeStat: { id: "gold", name: "Gold", lambda: (m) => m.gold }, skills: [],
@@ -34,7 +31,7 @@ export default class UserProfile extends Component {
         }
     }
 
-    /* An array containing all tracked stats, their ids, names and lambda expressions */
+    /** An array containing all tracked stats, their ids, names and lambda expressions. */
     allStats = [
         { id: "gold", name: "Gold", lambda: (m) => m.gold },
         { id: "kills", name: "Kills", lambda: (m) => m.kills },
@@ -51,12 +48,18 @@ export default class UserProfile extends Component {
         { id: "healing", name: "Healing", lambda: (m) => m.healing },
     ]
 
-    /* A lambda expression passed to StatSelector components to facilitate changing the selected stat */
+    /**
+     * A lambda expression passed to StatSelector components to facilitate changing the selected stat.
+     * @param {any} stat The id of the stat to select.
+     */
     selectStatFunc = (stat) => {
         this.setState({ activeStat: stat });
     }
 
-    /* A lambda expression passed to MatchListing components to facilitate selecting a match */
+    /**
+     * A lambda expression passed to MatchListing components to facilitate selecting a match.
+     * @param {any} match The match to select.
+     */
     selectMatch = (match) => {
         let selected = this.state.selectedMatches ?? [];
         this.setState({ selectedMatches: [] }); //Little fix for react error when modifying arrays within state
@@ -64,17 +67,14 @@ export default class UserProfile extends Component {
         this.setState({ selectedMatches: selected });
     }
 
-    /* A lambda expression passed to MatchListing components to facilitate unselecting a match */
+    /**
+     * A lambda expression passed to MatchListing components to facilitate unselecting a match.
+     * @param {any} match The match to deselect.
+     */
     deselectMatch = (match) => {
         let matches = this.state.selectedMatches ?? [];
         let newMatches = matches.filter((m) => m.id != match.id);
         this.setState({ selectedMatches: newMatches });
-    }
-
-    /* A function that populates skills by fetching analysis from the backend */
-    populateSkills() {
-        console.log("Repopulating Skills");
-        this.setState({ skills: this.GetFakeAnalysis() });
     }
 
     render() {
@@ -108,7 +108,10 @@ export default class UserProfile extends Component {
     }
 
     //Fetch
-    /* Initiates a profile task on the backend and gets a checkpoint id. */
+    /**
+     * Initiates a profile task on the backend and gets a checkpoint id.
+     * @param {any} usernameAndTagline The username and tagline of the player to search for.
+     */
     async fetchCheckpointId(usernameAndTagline) {
 
         let split = usernameAndTagline.split("#");
@@ -155,7 +158,10 @@ export default class UserProfile extends Component {
         }
     }
 
-    /* Uses a checkpoint id to recieve occasional updates from the backend to populate the page. */
+    /**
+     * Uses a checkpoint id to recieve occasional updates from the backend to populate the page.
+     * @param {any} checkpointId The ID of the checkpoint.
+     */
     async getCheckpointUpdate(checkpointId) {
 
         //Make Request to backend for user. If User is found, redirect to other page
@@ -215,6 +221,7 @@ export default class UserProfile extends Component {
 
     }
 
+    /** Fetches a list of skills from the backend using the selected matches. */
     async fetchSkills() {
         let username = this.state.userInfo.username;
         let rank = RankedHelper.GetRankedName(this.state.userInfo.rankSoloDuo.rank);
@@ -262,7 +269,10 @@ export default class UserProfile extends Component {
 
     }
 
-    //Testing
+    /**
+     * Generates an empty user info object. This populates the user info while it is loading.
+     * @param {any} usernameAndTagline The username and tagline to use in the empty user info.
+     */
     GetDefaultUserInfo(usernameAndTagline) {
         let split = usernameAndTagline.split("#");
 
@@ -286,6 +296,7 @@ export default class UserProfile extends Component {
         };
     }
 
+    /** Testing function that generates an array of fake matches */
     GetFakeMatches() {
         return [
             {
@@ -447,6 +458,7 @@ export default class UserProfile extends Component {
         ];
     }
 
+    /** Testing functions that generates an array of fake skills. */
     GetFakeAnalysis() {
         let allSkills = [
             { name: "Poor CS", good: false },

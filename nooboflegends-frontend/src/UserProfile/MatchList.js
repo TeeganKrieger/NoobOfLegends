@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './MatchList.css';
 import MatchListing from './MatchListing'
 
-/* Component that displays a list of matches */
+/** Component that displays a list of matches */
 export default class MatchList extends Component {
 
     constructor(props) {

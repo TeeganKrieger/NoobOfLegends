@@ -14,6 +14,12 @@ export default class App extends Component {
             page: "Home", props: {} };
     }
 
+    /**
+     * expression passed to pages to allow them to change to another page.
+     * @param {any} pageId The id of the page to change to.
+     * @param {any} props An properties to pass to the new page.
+     * @param {any} caller The name of the page requesting the page change. Kept around for legacy support.
+     */
     changePage = (pageId, props, caller) => {
         this.setState({ page: "", props: {} });
         this.setState({ page: pageId, props: props });
@@ -26,9 +32,6 @@ export default class App extends Component {
         switch (this.state.page) {
             case "Home":
                 page.push(<HomePage key="0" changePageFunc={this.changePage} additionalProps={this.state.props} />);
-                break;
-            case "Loading":
-                page.push(<LoadingPage key="1" changePageFunc={this.changePage} additionalProps={this.state.props} />);
                 break;
             case "Profile":
                 page.push(<UserProfile key="2" changePageFunc={this.changePage} additionalProps={this.state.props} />);

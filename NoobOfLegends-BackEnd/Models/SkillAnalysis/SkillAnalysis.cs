@@ -7,6 +7,9 @@ using NoobOfLegends_BackEnd.Controllers;
 
 namespace NoobOfLegends_BackEnd.Models.SkillAnalysis 
 {
+    /// <summary>
+    /// Logic model that computes skills players could improve upon.
+    /// </summary>
     public class SkillAnalysis
     {
         private readonly AppDbContext _dbContext;
@@ -21,8 +24,10 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
         #endregion
 
         
-
-        public class Skill
+        /// <summary>
+        /// Data model that defines a skill's ID, the expression to check this skill against, and a guide url.
+        /// </summary>
+        private class Skill
         {
             public Func<MatchParticipant, LolGlobalAverage, bool> checkExpression;
             public bool PositiveSkill;
@@ -38,7 +43,11 @@ namespace NoobOfLegends_BackEnd.Models.SkillAnalysis
             }
         }
 
-        // TODO: Finish skills list, get lolGlobalAverage for role/rank/division
+        /// <summary>
+        /// Analyzes matches to determine what skills apply to these matches.
+        /// </summary>
+        /// <param name="input">The input model to use for skill analysis.</param>
+        /// <returns>A list of skills a player could improve upon.</returns>
         public async Task<List<Tuple<string, bool, string>>> AnalyzeSkills(SkillAnalysisController.SkillAnalysisInput input) 
         {
             // Margin of allowed error for skill checking

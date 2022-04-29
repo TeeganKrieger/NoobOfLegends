@@ -3,7 +3,7 @@ import './HomePage.css';
 
 import banner from '../Resources/MiscIcons/nol-title-600x350.png';
 
-/* Component that renders an entire user profile using various sub components */
+/** Component that renders an entire user profile using various sub components */
 export default class HomePage extends Component {
 
     constructor(props) {
@@ -17,6 +17,10 @@ export default class HomePage extends Component {
         };
     }
 
+    /**
+     * Handles submitting a search. First obtains the name of the player being searched, then redirects to the UserProfile page.
+     * @param {any} event The event object for this event.
+     */
     async handleSearchSubmit(event) {
         event.preventDefault();
 

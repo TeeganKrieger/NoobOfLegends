@@ -14,7 +14,10 @@ import loadingIcon from '../Resources/MiscIcons/Loading.svg'
 
 export default {
 
-    /* Get the icon associated with a specific rank */
+    /**
+     * Get the icon of a given rank.
+     * @param {any} rank The rank to get the icon of.
+     */
      GetRankedIcon(rank) {
         switch (rank) {
             case -2:
@@ -41,7 +44,11 @@ export default {
                 return challengerIcon;
         }
     },
-    /* Get the full proper name associated with a specific rank */
+
+    /**
+     * Get the name of a given rank.
+     * @param {any} rank The rank to get the name of.
+     */
     GetRankedName(rank) {
         switch (rank) {
             case -2:
@@ -68,7 +75,11 @@ export default {
                 return "Challenger";
         }
     },
-    /* Get the name associated with a specific tier */
+
+    /**
+     * Get the name of a given tier.
+     * @param {any} tier The tier to get the name of.
+     */
     GetRankedTierName(tier) {
         switch (tier) {
             case -1:

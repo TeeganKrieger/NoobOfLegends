@@ -2,6 +2,9 @@
 
 namespace NoobOfLegends_BackEnd.Models.HTTP
 {
+    /// <summary>
+    /// Helper class that builds query strings.
+    /// </summary>
     public class QueryBuilder
     {
         private StringBuilder stringBuilder;
@@ -14,6 +17,11 @@ namespace NoobOfLegends_BackEnd.Models.HTTP
             stringBuilder.Append("?");
         }
 
+        /// <summary>
+        /// Adds a query to the query string.
+        /// </summary>
+        /// <param name="key">The key of the query.</param>
+        /// <param name="value">The value of the query.</param>
         public void AddQuery(string key, object value)
         {
             if (concatWithAnd)

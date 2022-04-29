@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import RankedHelper from '../Helpers/RankedIconHelper'
 import './UserInfo.css';
 
-/* Component that displays information about a user such as username and rank */
+/** Component that displays information about a user such as username and rank */
 export default class UserInfo extends Component {
 
     constructor(props) {

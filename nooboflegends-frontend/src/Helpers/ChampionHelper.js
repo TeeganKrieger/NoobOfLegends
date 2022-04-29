@@ -160,7 +160,10 @@ import zileanIcon from '../Resources/ChampionIcons/Zilean.png';
 import zoeIcon from '../Resources/ChampionIcons/Zoe.png';
 import zyraIcon from '../Resources/ChampionIcons/Zyra.png';
 
-/* Get the icon associated with a specific champion */
+/**
+ * Gets the icon for the provided champion.
+ * @param {any} champion The ID of the champion to get the icon of.
+ */
 export default function GetChampionIcon(champion) {
 
     switch (champion) {
