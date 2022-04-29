@@ -5,6 +5,9 @@ using System.Collections.Concurrent;
 
 namespace NoobOfLegends_BackEnd.Models
 {
+    /// <summary>
+    /// Task management class that supports asynchonous loading for the frontend with the Player Data Collection System.
+    /// </summary>
     public class UserResultsTask
     {
         private readonly IServiceProvider _serviceProvider;
@@ -24,12 +27,21 @@ namespace NoobOfLegends_BackEnd.Models
             this._serviceProvider = serviceProvider;
         }
 
+        /// <summary>
+        /// Initializes the task instance with a username and tagline.
+        /// </summary>
+        /// <param name="username">The username of the player who's data will be collected.</param>
+        /// <param name="tagline">The tagline of the player who's data will be collected.</param>
         public void Setup(string username, string tagline)
         {
             this.username = username;
             this.tagline = tagline;
         }
 
+        /// <summary>
+        /// Start the task.
+        /// </summary>
+        /// <returns>Returns nothing.</returns>
         public async Task StartAsync()
         {
             using (IServiceScope scope = _serviceProvider.CreateScope())
@@ -52,6 +64,10 @@ namespace NoobOfLegends_BackEnd.Models
             }
         }
 
+        /// <summary>
+        /// The main body of the task. Performs data collection and stores checkpoints within the current instance.
+        /// </summary>
+        /// <returns>Returns nothing.</returns>
         private async Task DoWork()
         {
 
@@ -203,6 +219,10 @@ namespace NoobOfLegends_BackEnd.Models
             completionEstimate = 1.0f;
         }
 
+        /// <summary>
+        /// Helper method that fetches an array of MatchDataResults from the current instance.
+        /// </summary>
+        /// <returns>An array of MatchDataResults from the current instance.</returns>
         private MatchDataResult[] GetMatches()
         {
             MatchDataResult[] results = matchesList.Values.OrderByDescending(x => x.playedOn).ToArray();
@@ -210,6 +230,10 @@ namespace NoobOfLegends_BackEnd.Models
             return results;
         }
 
+        /// <summary>
+        /// Helper method that fetches the user info from the current instance.
+        /// </summary>
+        /// <returns>The user info from the current instance.</returns>
         private UserInfoResult GetUserInfo()
         {
             UserInfoResult uir = userInfoResult;
@@ -217,6 +241,10 @@ namespace NoobOfLegends_BackEnd.Models
             return uir;
         }
 
+        /// <summary>
+        /// Get the results from the current checkpoint.
+        /// </summary>
+        /// <returns>The results from the current checkpoint.</returns>
         public CheckpointResult GetCheckpointResult()
         {
             if (lastError != 0)
@@ -237,6 +265,9 @@ namespace NoobOfLegends_BackEnd.Models
         }
     }
 
+    /// <summary>
+    /// Results model class that contains the matches and player info from the current checkpoint.
+    /// </summary>
     public class CheckpointResult
     {
         public UserInfoResult UserInfo { get; set; }
@@ -246,6 +277,9 @@ namespace NoobOfLegends_BackEnd.Models
         public int Error { get; set; }
     }
 
+    /// <summary>
+    /// Helper data model that contains information about a match.
+    /// </summary>
     public class MatchDataResult
     {
         public string id { get; set; }
@@ -307,6 +341,9 @@ namespace NoobOfLegends_BackEnd.Models
         }
     }
 
+    /// <summary>
+    /// Helper data model that contains a players ranked information.
+    /// </summary>
     public class UserInfoResult
     {
         private static Dictionary<string, int> rankLookup = new Dictionary<string, int>()

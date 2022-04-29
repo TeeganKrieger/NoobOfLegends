@@ -184,7 +184,12 @@ namespace NoobOfLegends.APIs.RiotApi
             }
         }
 
-        
+        /// <summary>
+        /// Get the Riot Account information of a user using their PUUID.
+        /// </summary>
+        /// <param name="puuid"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<RiotAccount> GetAccount(RiotPUUID puuid)
         {
             if (puuid.puuid == null)

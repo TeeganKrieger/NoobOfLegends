@@ -6,6 +6,10 @@ using NoobOfLegends.Models.Database;
 
 namespace NoobOfLegends_BackEnd.Controllers
 {
+
+    /// <summary>
+    /// Class that contains logic for Global Data Aggregation API endpoints.
+    /// </summary>
     public class GlobalDataController : Controller
     {
         private readonly AppDbContext _dbContext;
@@ -15,6 +19,12 @@ namespace NoobOfLegends_BackEnd.Controllers
             this._dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Begins data aggregation when a request is made to this endpoint.
+        /// </summary>
+        /// <param name="numberOfTopPlayers">The number of top players to aggregate in a rank and division.</param>
+        /// <param name="numberOfMatches">The number of matches per top player to add to the aggregation model.</param>
+        /// <returns>200 if successful, otherwise returns 500.</returns>
         [HttpPost("/api/globaldata/execute/{numberOfTopPlayers}/{numberOfMatches}")]
         public async Task<IActionResult> ExecuteAggregation(int numberOfTopPlayers, int numberOfMatches)
         {
@@ -30,6 +40,13 @@ namespace NoobOfLegends_BackEnd.Controllers
             }
         }
 
+        /// <summary>
+        /// Fetches the global averages for a given role, rank, and division from the database.
+        /// </summary>
+        /// <param name="role">The role to use when querying the database.</param>
+        /// <param name="rank">The rank to use when querying the database.</param>
+        /// <param name="division">The division to use when querying the database.</param>
+        /// <returns>The global averages for a given role, rank, and division.</returns>
         [HttpGet("/api/globaldata/get/{role}/{rank}/{division}")]
         public async Task<IActionResult> GetGlobalData(string role, string rank, string division)
         {

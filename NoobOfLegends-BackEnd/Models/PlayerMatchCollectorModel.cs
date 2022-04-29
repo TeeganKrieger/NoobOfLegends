@@ -7,17 +7,26 @@ using NoobOfLegends.Models.Services;
 
 namespace NoobOfLegends_BackEnd.Models
 {
-    public class UserMatches
+    /// <summary>
+    /// Logic model that collects user data and stores it in the database.
+    /// </summary>
+    public class PlayerMatchCollectorModel
     {
         private readonly AppDbContext _dbContext;
         private readonly RiotGamesApiTranslator _translator;
 
-        public UserMatches(RiotGamesApiTranslator translator, AppDbContext dbContext)
+        public PlayerMatchCollectorModel(RiotGamesApiTranslator translator, AppDbContext dbContext)
         {
             _dbContext = dbContext;
             _translator = translator;
         }
 
+        /// <summary>
+        /// Collect a players's match history and store it in the database.
+        /// </summary>
+        /// <param name="username">The username to use when collecting data.</param>
+        /// <param name="tagline">The username to use when collecting data.</param>
+        /// <returns>A list of the 100 most recent matches a player has played.</returns>
         public async Task<Match[]> GetUserMatchData(string username, string tagline)
         {
             System.Diagnostics.Debug.Write($"Fetching User {username}#{tagline} from database: ");

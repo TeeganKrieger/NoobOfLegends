@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
 {
+    /// <summary>
+    /// Logic model that supports aggregating user data and storing it in the database.
+    /// </summary>
     public class GlobalAggregation
     {
         private readonly AppDbContext _dbContext;
@@ -21,6 +24,13 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
 
         #endregion
 
+        /// <summary>
+        /// Runs a global aggregation task.
+        /// </summary>
+        /// <param name="queue">The queue to aggregate data from.</param>
+        /// <param name="numTopPlayers">The number of top players in a given role, rank, and division to collect matches from.</param>
+        /// <param name="numMatches">The number of matches to collect from each top player.</param>
+        /// <returns>Returns nothing.</returns>
         public async Task AggregateGlobalData(RiotRankedQueue queue = RiotRankedQueue.RankedSolo5v5, int numTopPlayers = 1, int numMatches = 1)
         {
 
@@ -139,8 +149,15 @@ namespace NoobOfLegends_BackEnd.Models.GlobalAggregation
             System.Diagnostics.Debug.WriteLine("Wrote to DB!");
         }
 
-        // Method to collect and sum data from each role
-        // TODO: Gather Data for Kill Participation. Connect to DB
+        /// <summary>
+        /// Breaks apart two RiotMatch Participants of the same role into individual stats and adds these stats to the global average.
+        /// </summary>
+        /// <param name="participant1">The first participant.</param>
+        /// <param name="participant2">The second participant.</param>
+        /// <param name="role">The role of these participants.</param>
+        /// <param name="rank">The rank of the global average being aggregated.</param>
+        /// <param name="division">The division of the global average being aggregated.</param>
+        /// <returns>Returns nothing.</returns>
         public async Task GatherParticipantData(RiotMatch.Participant participant1, RiotMatch.Participant participant2, string role, string rank, string division)
         {
             int gold = participant1.goldEarned + participant2.goldEarned;

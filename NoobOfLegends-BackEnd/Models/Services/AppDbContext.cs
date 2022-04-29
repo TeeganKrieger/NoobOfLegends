@@ -3,12 +3,15 @@ using NoobOfLegends.Models.Database;
 
 namespace NoobOfLegends.Models.Services
 {
+    /// <summary>
+    /// The database context object.
+    /// This object contains references to all the explicit tables within the database.
+    /// </summary>
     public class AppDbContext : DbContext
     {
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        //DbSets will go here
         public DbSet<LolUser> LolUsers { get; set; }
 
         public DbSet<LolUserAverage> LolUserAverages { get; set; }
