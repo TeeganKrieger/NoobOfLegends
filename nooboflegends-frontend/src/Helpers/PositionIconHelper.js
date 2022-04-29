@@ -6,7 +6,10 @@ import botIcon from '../Resources/PositionIcons/Bot.png';
 import supportIcon from '../Resources/PositionIcons/Support.png';
 import jungleIcon from '../Resources/PositionIcons/Jungle.png';
 
-/* Get the icon associated with a specific position */
+/**
+ * Get the icon for a position.
+ * @param {any} position The ID of the position to get the icon of.
+ */
 export default function GetPositionIcon(position) {
 
     switch (position) {

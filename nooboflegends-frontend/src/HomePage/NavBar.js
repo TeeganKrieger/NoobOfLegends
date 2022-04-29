@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './NavBar.css';
 import logo from '../Resources/MiscIcons/favicon-white-hat-128.png';
 
-/* Component that renders an entire user profile using various sub components */
+/** Component that renders an entire user profile using various sub components */
 export default class NavBar extends Component {
 
     constructor(props) {
@@ -20,18 +20,28 @@ export default class NavBar extends Component {
         }
     }
 
-    doNothing() { }
-
+    /**
+     * Handles returning to the home page from the navbar.
+     * @param {any} event The event object for this event.
+     */
     handleReturnHome(event) {
         event.preventDefault();
         this.state.changePage("Home", {}, "NavBar");
     }
 
+    /**
+     * Handles redirecting to the Player Comparison page from the navbar.
+     * @param {any} event The event object for this event.
+     */
     handleComparisonPage(event) {
         event.preventDefault();
         this.state.changePage("Compare", {}, "NavBar");
     }
 
+    /**
+     * Handles submitting a search from the navbar. Redirects to the Player Profile Page.
+     * @param {any} event The event object for this event.
+     */
     async handleSearchSubmit(event) {
         event.preventDefault();
 
