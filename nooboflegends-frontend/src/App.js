@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import NavBar from './HomePage/NavBar';
 import HomePage from './HomePage/HomePage';
 import UserProfile from './UserProfile/UserProfile';
-import LoadingPage from './LoadingPage/LoadingPage';
 import UserComparison from './UserComparison/UserComparison';
 
 export default class App extends Component {
