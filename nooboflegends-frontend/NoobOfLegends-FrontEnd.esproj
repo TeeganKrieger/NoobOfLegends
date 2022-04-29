@@ -14,7 +14,6 @@
     <Script Remove=".vscode\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\LoadingPage\" />
     <Folder Include="src\Resources\ChampionIcons\" />
     <Folder Include="src\Resources\PositionIcons\" />
     <Folder Include="src\Resources\RankedIcons\" />
